@@ -24,19 +24,47 @@ use stdClass;
  */
 final class RESTSpeaker extends HTTPSpeaker
 {
-    /** @var RestAuth */
-    protected $auth;
+    /** @var HTTPSpeaker Use this when you need the raw GuzzleHTTP. */
+    public $http;
 
-    public function __construct(RestAuth $auth, string $baseURI = '')
+    /** @var RESTAuth */
+    protected $authStrat;
+
+    public function __construct(RESTAuth $authStrat, string $baseURI = '')
     {
         parent::__construct($baseURI);
 
-        $this->auth = $auth;
+        $this->authStrat = $authStrat;
+        $this->http = new HTTPSpeaker($baseURI);
     }
 
     public function __call($name, $arguments): ?stdClass
     {
+        $mergeGuzzleHTTPOptions = function(array $methodArgs): array {
+            $userOptions = $methodArgs[1] ?? [];
+            $options = array_merge_recursive(
+                $userOptions,
+                [
+                    'headers' => [
+                        // @todo: Figure out how to include a real version number.
+                        'User-Agent'   => 'PHPExperts/RESTSpeaker/1.0 (PHP 7)',
+                        'Content-Type' => 'application/json',
+                    ],
+                ],
+                $this->authStrat->generateGuzzleAuthOptions()
+            );
+
+            $methodArgs[1] = $options;
+
+            return $methodArgs;
+        };
+
         if (is_callable([$this->http, $name])) {
+            // Automagically inject auth headers into the RESTful methods.
+            if (in_array($name, ['get', 'post', 'put', 'patch', 'delete'])) {
+                $arguments = $mergeGuzzleHTTPOptions($arguments);
+            }
+
             $response = $this->http->$name(...$arguments);
 
             if ($response instanceof Response) {

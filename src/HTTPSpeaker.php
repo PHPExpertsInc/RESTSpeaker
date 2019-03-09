@@ -31,10 +31,10 @@ class HTTPSpeaker
         $this->http = new GuzzleClient(['base_uri' => $baseURI]);
     }
 
-    public function __call($name, $arguments): ?stdClass
+    public function __call($name, $arguments)
     {
         if (is_callable([$this->http, $name])) {
-            return $this->http->$name($arguments);
+            return $this->http->$name(...$arguments);
         }
 
         $callName = self::class . '::' . $name;

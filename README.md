@@ -17,7 +17,7 @@ JSON responses and is much easier to work with.
 	$baseURI = 'https://api.myservice.dev/';
 
 	// Either use an .env file or configure ussing the appropriate setters.
-	$restAuth = new RestAuth(RestAuth::AUTH_MODE_TOKEN);
+	$restAuth = new RESTAuth(RESTAuth::AUTH_MODE_TOKEN);
 	$apiClient = new RESTSpeaker($restAuth, $baseURI);
 
 	$response = $apiClient->get("v1/accounts/{$uuid}", [
