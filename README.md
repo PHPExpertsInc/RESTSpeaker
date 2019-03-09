@@ -8,6 +8,17 @@ via the Composition architectural pattern.
 It further extends base Guzzle so that it automagically decodes
 JSON responses and is much easier to work with.
 
+## Installation
+
+Via Composer
+
+```bash
+composer require phpexperts/rest-speaker
+```
+
+## Change log
+
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
 ## Usage
 
@@ -41,13 +52,27 @@ JSON responses and is much easier to work with.
         )
 	)
 	 */
+
+	// Get the more to-the-metal HTTPSpeaker:
+	$apiClient->http->get('/someURI');
+```
+## ChangeLog
+
+Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
+
+## Testing
+
+```bash
+phpunit
 ```
 
 # Contributors
 
-Theodore R. Smith <theodore@phpexperts.pro>
-
-GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
-
+[Theodore R. Smith](https://www.phpexperts.pro/]) <theodore@phpexperts.pro>  
+GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690  
 CEO: PHP Experts, Inc.
+
+## License
+
+MIT license. Please see the [license file](LICENSE) for more information.
 
