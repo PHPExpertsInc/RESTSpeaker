@@ -18,7 +18,7 @@ use Illuminate\Log\Logger;
 use LogicException;
 use RuntimeException;
 
-class RestAuth extends HTTPSpeaker
+class RESTAuth extends HTTPSpeaker
 {
     /** OAuth2 Tokens are required for prod but unavailable in the dev sandbox. **/
     public const AUTH_MODE_PASSKEY = 'passkey';

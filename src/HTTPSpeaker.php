@@ -21,7 +21,7 @@ use stdClass;
 /**
  * @mixin GuzzleClient
  */
-abstract class HTTPSpeaker
+class HTTPSpeaker
 {
     /** @var GuzzleClient */
     protected $http;

@@ -22,7 +22,7 @@ use stdClass;
 /**
  * @mixin GuzzleClient
  */
-abstract class RESTSpeaker extends HTTPSpeaker
+final class RESTSpeaker extends HTTPSpeaker
 {
     /** @var RestAuth */
     protected $auth;
