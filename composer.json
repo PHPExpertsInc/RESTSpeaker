@@ -1,0 +1,41 @@
+{
+    "name": "phpexperts/rest-speaker",
+    "description": "A quick and easy GuzzleHTTP extension for effortlessly handling RESTful APIs.",
+    "keywords": [
+        "rest",
+        "restful",
+        "php",
+        "api"
+    ],
+    "homepage": "https://www.phpexperts.pro/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PHP Experts, Inc.",
+            "homepage": "https://www.phpexperts.pro/"
+        },
+        {
+            "name": "Theodore R. Smith",
+            "homepage": "https://www.linkedin.com/in/hopeseekr"
+        }
+    ],
+    "require": {
+        "php": ">=7.1",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "^6.3",
+        "psr/log": "^1.1",
+        "monolog/monolog": "^1.24",
+        "illuminate/log": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.0",
+        "mockery/mockery": "^1.0"
+    },
+    "autoload": {
+        "psr-4": { "PHPExperts\\RESTSpeaker\\" : "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "PHPExperts\\RESTSpeaker\\Tests\\" : "test/" }
+    }
+}
