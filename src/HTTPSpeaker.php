@@ -22,7 +22,7 @@ use GuzzleHttp\ClientInterface as iGuzzleClient;
  */
 class HTTPSpeaker
 {
-    /** @var GuzzleClient */
+    /** @var iGuzzleClient|GuzzleClient */
     protected $http;
 
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
@@ -36,11 +36,11 @@ class HTTPSpeaker
     /**
      * Uses the Composition Pattern with Guzzle.
      *
-     * @param $name
-     * @param $arguments
+     * @param string $name
+     * @param array  $arguments
      * @return mixed
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         // Literally any method name is callable in Guzzle, so there's no need to check.
         return $this->http->$name(...$arguments);

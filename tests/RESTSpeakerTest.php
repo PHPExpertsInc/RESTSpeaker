@@ -38,7 +38,7 @@ class RESTSpeakerTest extends TestCase
             /** @noinspection PhpMissingParentConstructorInspection */
             public function __construct()
             {
-                $this->authMode = RESTAuth::AUTH_MODE_OAUTH2;
+                $this->authMode = RESTAuth::AUTH_NONE;
             }
 
             protected function generateOAuth2TokenOptions(): array

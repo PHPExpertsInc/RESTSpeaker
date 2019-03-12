@@ -32,7 +32,7 @@ abstract class RESTAuth
         self::AUTH_MODE_XAPI,
     ];
 
-    /** @var RESTSpeaker */
+    /** @var RESTSpeaker|null */
     protected $api;
 
     /** @var string */
