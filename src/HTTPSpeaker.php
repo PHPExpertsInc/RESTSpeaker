@@ -31,6 +31,13 @@ class HTTPSpeaker
         $this->http = new GuzzleClient(['base_uri' => $baseURI]);
     }
 
+    /**
+     * Uses the Composition Pattern with Guzzle.
+     *
+     * @param $name
+     * @param $arguments
+     * @return mixed
+     */
     public function __call($name, $arguments)
     {
         if (is_callable([$this->http, $name])) {

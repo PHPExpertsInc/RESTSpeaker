@@ -22,6 +22,7 @@ abstract class RESTAuth
     /** OAuth2 Tokens are required for prod but unavailable in the dev sandbox. **/
     public const AUTH_MODE_PASSKEY = 'passkey';
     public const AUTH_MODE_TOKEN = 'token';
+    public const AUTH_MODE_XAPI = 'xapi';
 
     /** @var RESTSpeaker */
     protected $api;
@@ -58,6 +59,18 @@ abstract class RESTAuth
      */
     abstract protected function generatePasskeyGuzzleOptions(): array;
 
+    protected function generateXAPITokenOptions(): array
+    {
+        $apiKey = env('X_API_KEY');
+        if (!$apiKey) {
+            throw new \LogicException('X_API_KEY has not been set in .env.');
+        }
+
+        return [
+            'X-API-Key' => $apiKey,
+        ];
+    }
+
     public function generateGuzzleAuthOptions(): array
     {
         if ($this->authMode === self::AUTH_MODE_TOKEN) {
@@ -65,6 +78,9 @@ abstract class RESTAuth
         }
         elseif ($this->authMode === self::AUTH_MODE_PASSKEY) {
             return $this->generatePasskeyGuzzleOptions();
+        }
+        elseif ($this->authMode === self::AUTH_MODE_XAPI) {
+            return $this->generateXAPITokenOptions();
         }
 
         throw new LogicException('Invalid REST auth mode.');
