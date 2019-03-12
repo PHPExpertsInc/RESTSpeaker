@@ -19,10 +19,18 @@ use RuntimeException;
 
 abstract class RESTAuth
 {
+    public const AUTH_NONE = 'NoAuth';
     /** OAuth2 Tokens are required for prod but unavailable in the dev sandbox. **/
-    public const AUTH_MODE_PASSKEY = 'passkey';
-    public const AUTH_MODE_TOKEN = 'token';
-    public const AUTH_MODE_XAPI = 'xapi';
+    public const AUTH_MODE_PASSKEY = 'Passkey';
+    public const AUTH_MODE_OAUTH2 = 'OAuth2Token';
+    public const AUTH_MODE_XAPI = 'XAPIToken';
+
+    public const AUTH_MODES = [
+        self::AUTH_NONE,
+        self::AUTH_MODE_PASSKEY,
+        self::AUTH_MODE_OAUTH2,
+        self::AUTH_MODE_XAPI,
+    ];
 
     /** @var RESTSpeaker */
     protected $api;
@@ -32,8 +40,8 @@ abstract class RESTAuth
 
     public function __construct(string $authStratMode, RESTSpeaker $apiClient = null)
     {
-        if (!in_array($authStratMode, [self::AUTH_MODE_PASSKEY, self::AUTH_MODE_TOKEN])) {
-            throw new LogicException('Invalid Zuora REST auth mode.');
+        if (!in_array($authStratMode, self::AUTH_MODES)) {
+            throw new LogicException('Invalid REST auth mode.');
         }
 
         $this->api = $apiClient;
@@ -46,18 +54,22 @@ abstract class RESTAuth
         $this->api = $apiClient;
     }
 
+    protected function generateNoAuthOptions(): array
+    {
+        return [];
+    }
+
     /**
      * @throws LogicException if token auth is attempted in an unsupported OAuth2 environment.
      * @throws RuntimeException if an OAuth2 Token could not be successfully generated.
      * @return array The appropriate headers for OAuth2 Tokens.
      */
-    abstract protected function generateOAuthTokenHeader(): array;
+    abstract protected function generateOAuth2TokenOptions(): array;
 
     /**
-     * @throws LogicException if the Zuora Rest Client is not configured in the .env file.
      * @return array The appropriate headers for passkey authorization.
      */
-    abstract protected function generatePasskeyGuzzleOptions(): array;
+    abstract protected function generatePasskeyOptions(): array;
 
     protected function generateXAPITokenOptions(): array
     {
@@ -73,16 +85,11 @@ abstract class RESTAuth
 
     public function generateGuzzleAuthOptions(): array
     {
-        if ($this->authMode === self::AUTH_MODE_TOKEN) {
-            return $this->generateOAuthTokenHeader();
-        }
-        elseif ($this->authMode === self::AUTH_MODE_PASSKEY) {
-            return $this->generatePasskeyGuzzleOptions();
-        }
-        elseif ($this->authMode === self::AUTH_MODE_XAPI) {
-            return $this->generateXAPITokenOptions();
+        $handler = "generate{$this->authMode}Options";
+        if (!is_callable([$this, $handler])) {
+            throw new LogicException('Invalid REST auth mode.');
         }
 
-        throw new LogicException('Invalid REST auth mode.');
+        return $this->$handler();
     }
 }
