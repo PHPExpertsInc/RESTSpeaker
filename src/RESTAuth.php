@@ -63,7 +63,7 @@ abstract class RESTAuth
     {
         $apiKey = env('X_API_KEY');
         if (!$apiKey) {
-            throw new \LogicException('X_API_KEY has not been set in .env.');
+            throw new LogicException('X_API_KEY has not been set in .env.');
         }
 
         return [

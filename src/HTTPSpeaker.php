@@ -16,7 +16,6 @@ namespace PHPExperts\RESTSpeaker;
 
 use Error;
 use GuzzleHttp\Client as GuzzleClient;
-use stdClass;
 
 /**
  * @mixin GuzzleClient
