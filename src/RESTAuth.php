@@ -28,7 +28,7 @@ abstract class RESTAuth
     protected $api;
 
     /** @var string */
-    private $authMode;
+    protected $authMode;
 
     public function __construct(string $authStratMode, RESTSpeaker $apiClient = null)
     {

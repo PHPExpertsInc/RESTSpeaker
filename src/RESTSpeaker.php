@@ -17,7 +17,6 @@ namespace PHPExperts\RESTSpeaker;
 use Error;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
-use stdClass;
 
 /**
  * @mixin GuzzleClient
@@ -30,15 +29,19 @@ final class RESTSpeaker extends HTTPSpeaker
     /** @var RESTAuth */
     protected $authStrat;
 
-    public function __construct(RESTAuth $authStrat, string $baseURI = '')
+    public function __construct(RESTAuth $authStrat, string $baseURI = '', HTTPSpeaker $http = null)
     {
         parent::__construct($baseURI);
 
         $this->authStrat = $authStrat;
-        $this->http = new HTTPSpeaker($baseURI);
+
+        if (!$http) {
+            $http = new HTTPSpeaker($baseURI);
+        }
+        $this->http = $http;
     }
 
-    public function __call($name, $arguments): ?stdClass
+    public function __call($name, $arguments)
     {
         $mergeGuzzleHTTPOptions = function(array $methodArgs): array {
             $userOptions = $methodArgs[1] ?? [];
@@ -59,33 +62,29 @@ final class RESTSpeaker extends HTTPSpeaker
             return $methodArgs;
         };
 
-        if (is_callable([$this->http, $name])) {
-            // Automagically inject auth headers into the RESTful methods.
-            if (in_array($name, ['get', 'post', 'put', 'patch', 'delete'])) {
-                $arguments = $mergeGuzzleHTTPOptions($arguments);
-            }
-
-            $response = $this->http->$name(...$arguments);
-
-            if ($response instanceof Response) {
-                // If empty, bail.
-                $responseData = $response->getBody()->getContents();
-                if (empty($responseData)) {
-                    return null;
-                }
-
-                // Attempt to decode JSON, if that's what we got.
-                $decoded = json_decode($responseData);
-                if (!empty($decoded)) {
-                    return $decoded;
-                }
-            }
-
-            // Nothing worked out, so let's return what we got.
-            return $response;
+        // Literally any method name is callable in Guzzle, so there's no need to check is_callable().
+        // Automagically inject auth headers into the RESTful methods.
+        if (in_array($name, ['get', 'post', 'put', 'patch', 'delete'])) {
+            $arguments = $mergeGuzzleHTTPOptions($arguments);
         }
 
-        $callName = self::class . '::' . $name;
-        throw new Error("Invalid method: '{$callName}'.");
+        $response = $this->http->$name(...$arguments);
+
+        if ($response instanceof Response) {
+            // If empty, bail.
+            $responseData = $response->getBody()->getContents();
+            if (empty($responseData)) {
+                return null;
+            }
+
+            // Attempt to decode JSON, if that's what we got.
+            $decoded = json_decode($responseData);
+            if (!empty($decoded)) {
+                return $decoded;
+            }
+        }
+
+        // Nothing worked out, so let's return what we got.
+        return $response;
     }
 }

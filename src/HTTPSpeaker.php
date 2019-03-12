@@ -16,6 +16,7 @@ namespace PHPExperts\RESTSpeaker;
 
 use Error;
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface as iGuzzleClient;
 
 /**
  * @mixin GuzzleClient
@@ -25,9 +26,12 @@ class HTTPSpeaker
     /** @var GuzzleClient */
     protected $http;
 
-    public function __construct(string $baseURI = '')
+    public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
-        $this->http = new GuzzleClient(['base_uri' => $baseURI]);
+        if (!$guzzle) {
+            $guzzle = new GuzzleClient(['base_uri' => $baseURI]);
+        }
+        $this->http = $guzzle;
     }
 
     /**
@@ -39,11 +43,7 @@ class HTTPSpeaker
      */
     public function __call($name, $arguments)
     {
-        if (is_callable([$this->http, $name])) {
-            return $this->http->$name(...$arguments);
-        }
-
-        $callName = self::class . '::' . $name;
-        throw new Error("Invalid method: '{$callName}'.");
+        // Literally any method name is callable in Guzzle, so there's no need to check.
+        return $this->http->$name(...$arguments);
     }
 }
