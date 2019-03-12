@@ -1,5 +1,17 @@
 <?php declare(strict_types=1);
 
+/**
+ * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
+ *
+ * Copyright © 2019 PHP Experts, Inc.
+ * Author: Theodore R. Smith <theodore@phpexperts.pro>
+ *  GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
+ *  https://www.phpexperts.pro/
+ *  https://github.com/phpexpertsinc/RESTSpeaker
+ *
+ * This file is licensed under the MIT License.
+ */
+
 namespace PHPExperts\RESTSpeaker\Tests;
 
 use GuzzleHttp\Client as GuzzleClient;
@@ -10,7 +22,6 @@ use PHPExperts\RESTSpeaker\HTTPSpeaker;
 use PHPExperts\RESTSpeaker\RESTAuth;
 use PHPExperts\RESTSpeaker\RESTSpeaker;
 use PHPUnit\Framework\TestCase;
-use RuntimeException;
 
 class RESTSpeakerTest extends TestCase
 {
@@ -62,7 +73,7 @@ class RESTSpeakerTest extends TestCase
     public function testCanBuildItself()
     {
         $api = new RESTSpeaker(self::buildRESTAuthMock());
-        $this->assertInstanceOf(RESTSpeaker::class, $api);
+        self::assertInstanceOf(RESTSpeaker::class, $api);
     }
 
     public function testReturnsNullWhenNoContent()
@@ -71,12 +82,12 @@ class RESTSpeakerTest extends TestCase
             new Response(
                 204, // HTTP/204: No Content
                 ['Content-Type' => 'application/json'],
-                null,
+                null
             )
         );
 
         $actual = $this->api->get('/no-data');
-        $this->assertNull($actual);
+        self::assertNull($actual);
     }
 
     public function testWorks_as_a_Guzzle_proxy_when_not_JSON()

@@ -14,7 +14,6 @@
 
 namespace PHPExperts\RESTSpeaker;
 
-use Error;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Psr7\Response;
 

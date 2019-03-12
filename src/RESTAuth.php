@@ -40,7 +40,7 @@ abstract class RESTAuth
 
     public function __construct(string $authStratMode, RESTSpeaker $apiClient = null)
     {
-        if (!in_array($authStratMode, self::AUTH_MODES)) {
+        if (!in_array($authStratMode, static::AUTH_MODES)) {
             throw new LogicException('Invalid REST auth mode.');
         }
 
