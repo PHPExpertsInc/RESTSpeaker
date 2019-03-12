@@ -90,6 +90,27 @@ Please see the [changelog](CHANGELOG.md) for more information on what has change
     $guzzleResponse = $api->get('https://slashdot.org/');
 ```
 
+# Use cases
+
+PHPExperts\RESTSpeaker\Tests\HTTPSpeaker  
+ ✔ Works as a Guzzle proxy
+
+PHPExperts\RESTSpeaker\Tests\RESTAuth  
+ ✔ Cannot build itself  
+ ✔ Children can build themselves  
+ ✔ Will not allow invalid auth modes  
+ ✔ Can set a custom api client  
+ ✔ Wont call a nonexisting auth strat  
+ ✔ Supports no auth  
+ ✔ Supports XAPI Token auth  
+
+PHPExperts\RESTSpeaker\Tests\RESTSpeaker  
+ ✔ Can build itself  
+ ✔ Returns null when no content  
+ ✔ Works as a Guzzle proxy when not JSON  
+ ✔ Decodes JSON URLs  
+ ✔ Can fall down to HTTPSpeaker
+
 
 ## ChangeLog
 

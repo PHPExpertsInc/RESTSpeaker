@@ -24,12 +24,14 @@ abstract class RESTAuth
     public const AUTH_MODE_PASSKEY = 'Passkey';
     public const AUTH_MODE_OAUTH2 = 'OAuth2Token';
     public const AUTH_MODE_XAPI = 'XAPIToken';
+    public const AUTH_MODE_CUSTOM = 'CustomAuth';
 
     public const AUTH_MODES = [
         self::AUTH_NONE,
         self::AUTH_MODE_PASSKEY,
         self::AUTH_MODE_OAUTH2,
         self::AUTH_MODE_XAPI,
+        self::AUTH_MODE_CUSTOM,
     ];
 
     /** @var RESTSpeaker|null */
@@ -57,6 +59,11 @@ abstract class RESTAuth
     protected function generateNoAuthOptions(): array
     {
         return [];
+    }
+
+    protected function generateCustomAuthOptions(): array
+    {
+        throw new LogicException('The base RestAuth custom auth should not be called.');
     }
 
     /**
