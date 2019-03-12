@@ -54,8 +54,43 @@ Please see the [changelog](CHANGELOG.md) for more information on what has change
 	 */
 
 	// Get the more to-the-metal HTTPSpeaker:
-	$apiClient->http->get('/someURI');
+	$guzzleResponse = $apiClient->http->get('/someURI');
 ```
+
+## Comparison to Guzzle
+
+```php
+    // Plain Guzzle
+    $http = new GuzzleClient([
+        'base_uri' => 'https://api.my-site.dev/',
+    ]);
+    
+    $response = $http->post("/members/$username/session", [
+        'headers' => [
+            'X-API-Key' => env('TLSV2_APIKEY'),
+        ],
+    ]);
+    
+    $json = json_decode(
+        $response
+            ->getBody()
+            ->getContents(),
+        true
+    );
+    
+    
+    // RESTSpeaker
+    $authStrat = new RESTAuth(RESTAuth::AUTH_MODE_XAPI);
+    $api = new RESTSpeaker($authStrat, 'https://api.my-site.dev/');
+    
+    // For URLs that return Content-Type: application/json:
+    $json = $api->post('/members/' . $username . '/session');
+    
+    // For all other URL Content-Types:
+    $guzzleResponse = $api->get('https://slashdot.org/');
+```
+
+
 ## ChangeLog
 
 Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
