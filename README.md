@@ -1,5 +1,7 @@
 # RESTSpeaker
 
+[![TravisCI](https://travis-ci.org/phpexpertsinc/RESTSpeaker.svg?branch=master)](https://github.com/phpexpertsinc/RESTSpeaker)
+
 RESTSpeaker is a PHP Experts, Inc., Project meant to ease the accessing of APIs.
 
 This library's Speaker classes utilize the Guzzle HTTP Client
