@@ -142,4 +142,12 @@ class RESTAuthTest extends TestCase
         $actual =$restAuth->generateGuzzleAuthOptions();
         self::assertEquals($expected, $actual);
     }
+
+    public function testSupportsCustomAuthStrategies()
+    {
+        self::expectException(LogicException::class);
+
+        $restAuth = self::buildRestAuthMock(RESTAuth::AUTH_MODE_CUSTOM);
+        $restAuth->generateGuzzleAuthOptions();
+    }
 }

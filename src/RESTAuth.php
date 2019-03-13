@@ -17,7 +17,8 @@ namespace PHPExperts\RESTSpeaker;
 use LogicException;
 use RuntimeException;
 
-abstract class RESTAuth
+
+abstract class RESTAuth implements RESTAuthDriver
 {
     public const AUTH_NONE = 'NoAuth';
     /** OAuth2 Tokens are required for prod but unavailable in the dev sandbox. **/

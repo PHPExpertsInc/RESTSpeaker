@@ -103,12 +103,13 @@ PHPExperts\RESTSpeaker\Tests\RESTAuth
  ✔ Wont call a nonexisting auth strat  
  ✔ Supports no auth  
  ✔ Supports XAPI Token auth  
+ ✔ Supports custom auth strategies
 
 PHPExperts\RESTSpeaker\Tests\RESTSpeaker  
  ✔ Can build itself  
  ✔ Returns null when no content  
  ✔ Works as a Guzzle proxy when not JSON  
- ✔ Decodes JSON URLs  
+ ✔ JSON URLs return plain PHP arrays
  ✔ Can fall down to HTTPSpeaker
 
 

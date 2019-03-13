@@ -103,7 +103,7 @@ class RESTSpeakerTest extends TestCase
         self::assertEquals($expectedBody, $actual->getBody());
     }
 
-    public function testDecodes_JSON_URLs()
+    public function testJSON_URLs_return_plain_PHP_arrays()
     {
         $expected = [
             'decoded' => 'json',
