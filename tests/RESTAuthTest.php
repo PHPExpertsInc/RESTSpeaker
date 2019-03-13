@@ -45,6 +45,7 @@ class RESTAuthTest extends TestCase
                 RESTAuth::AUTH_MODE_PASSKEY,
                 RESTAuth::AUTH_MODE_OAUTH2,
                 RESTAuth::AUTH_MODE_XAPI,
+                RESTAuth::AUTH_MODE_CUSTOM,
                 self::AUTH_MODE_DOESNT_EXIST,
             ];
 
@@ -145,9 +146,17 @@ class RESTAuthTest extends TestCase
 
     public function testSupportsCustomAuthStrategies()
     {
-        self::expectException(LogicException::class);
-
-        $restAuth = self::buildRestAuthMock(RESTAuth::AUTH_MODE_CUSTOM);
-        $restAuth->generateGuzzleAuthOptions();
+        try {
+            $restAuth = self::buildRestAuthMock(RESTAuth::AUTH_MODE_CUSTOM);
+            $restAuth->generateGuzzleAuthOptions();
+            $this->fail('The base RestAuth custom auth was called and no exception was thrown.');
+        }
+        catch (LogicException $e) {
+            self::assertEquals(
+                'The base RestAuth custom auth should not be called.',
+                $e->getMessage(),
+                'Something is wrong. The test is probably bugged.'
+            );
+        }
     }
 }
