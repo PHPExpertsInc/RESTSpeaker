@@ -97,7 +97,7 @@ class RESTAuthTest extends TestCase
 
         self::assertNull($restAuth->getApiClient());
 
-        $restAuthMock = RESTSpeakerTest::buildRESTAuthMock();
+        $restAuthMock = TestHelper::buildRESTAuthMock();
         $expectedClient = new RESTSpeaker($restAuthMock);
 
         $restAuth->setApiClient($expectedClient);

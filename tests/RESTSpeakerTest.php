@@ -31,37 +31,11 @@ class RESTSpeakerTest extends TestCase
     /** @var MockHandler */
     protected $guzzleHandler;
 
-    public static function buildRESTAuthMock(): RESTAuth
-    {
-        return new class extends RESTAuth
-        {
-            /** @noinspection PhpMissingParentConstructorInspection */
-            public function __construct()
-            {
-                $this->authMode = RESTAuth::AUTH_NONE;
-            }
-
-            protected function generateOAuth2TokenOptions(): array
-            {
-                return [];
-            }
-
-            /**
-             * @return array The appropriate headers for passkey authorization.
-             * @throws LogicException if the Zuora Rest Client is not configured in the .env file.
-             */
-            protected function generatePasskeyOptions(): array
-            {
-                return [];
-            }
-        };
-    }
-
     public function setUp()
     {
         parent::setUp();
 
-        $restAuthMock = self::buildRESTAuthMock();
+        $restAuthMock = TestHelper::buildRESTAuthMock();
 
         $this->guzzleHandler = new MockHandler();
 
@@ -72,7 +46,7 @@ class RESTSpeakerTest extends TestCase
 
     public function testCanBuildItself()
     {
-        $api = new RESTSpeaker(self::buildRESTAuthMock());
+        $api = new RESTSpeaker(TestHelper::buildRESTAuthMock());
         self::assertInstanceOf(RESTSpeaker::class, $api);
     }
 
