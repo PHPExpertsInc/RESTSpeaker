@@ -1,5 +1,8 @@
 # RESTSpeaker
 
+[![TravisCI](https://travis-ci.org/phpexpertsinc/RESTSpeaker.svg?branch=master)](https://github.com/phpexpertsinc/RESTSpeaker)
+[![Coverage Status](https://coveralls.io/repos/phpexpertsinc/RESTSpeaker/badge.png?branch=master)](https://coveralls.io/r/phpexpertsinc/RESTSpeaker)
+
 RESTSpeaker is a PHP Experts, Inc., Project meant to ease the accessing of APIs.
 
 This library's Speaker classes utilize the Guzzle HTTP Client
@@ -88,6 +91,16 @@ Please see the [changelog](CHANGELOG.md) for more information on what has change
     
     // For all other URL Content-Types:
     $guzzleResponse = $api->get('https://slashdot.org/');
+
+    // If you have a custom REST authentication strategy, simply implement it like this:
+    class MyRestAuthStrat extends RESTAuth
+    {
+        protected function generateCustomAuthOptions(): []
+        {
+            // Custom code here.
+            return [];
+        }
+    }
 ```
 
 # Use cases

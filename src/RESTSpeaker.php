@@ -40,7 +40,7 @@ final class RESTSpeaker extends HTTPSpeaker
         $this->http = $http;
     }
 
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         $mergeGuzzleHTTPOptions = function(array $methodArgs): array {
             $userOptions = $methodArgs[1] ?? [];
