@@ -1,6 +1,7 @@
 # RESTSpeaker
 
 [![TravisCI](https://travis-ci.org/phpexpertsinc/RESTSpeaker.svg?branch=master)](https://github.com/phpexpertsinc/RESTSpeaker)
+[![Coverage Status](https://coveralls.io/repos/phpexpertsinc/RESTSpeaker/badge.png?branch=master)](https://coveralls.io/r/phpexpertsinc/RESTSpeaker)
 
 RESTSpeaker is a PHP Experts, Inc., Project meant to ease the accessing of APIs.
 

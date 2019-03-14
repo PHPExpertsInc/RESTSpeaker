@@ -12,3 +12,5 @@ before_script:
 script: 
   - mkdir -p build/logs
   - vendor/bin/phpunit --coverage-text --coverage-clover build/logs/clover.xml
+
+after_script: ./codeclimate.sh
