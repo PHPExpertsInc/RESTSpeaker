@@ -25,12 +25,35 @@ class HTTPSpeaker
     /** @var iGuzzleClient|GuzzleClient */
     protected $http;
 
+    /** @var string */
+    protected $mimeType = 'text/html';
+
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
         if (!$guzzle) {
             $guzzle = new GuzzleClient(['base_uri' => $baseURI]);
         }
         $this->http = $guzzle;
+    }
+
+    public function mergeGuzzleOptions(array $methodArgs, array $guzzleAuthOptions): array
+    {
+        $userOptions = $methodArgs[1] ?? [];
+        $options = array_merge_recursive(
+            $userOptions,
+            [
+                'headers' => [
+                    // @todo: Figure out how to include a real version number.
+                    'User-Agent'   => 'PHPExperts/RESTSpeaker/1.0 (PHP 7)',
+                    'Content-Type' => $this->mimeType,
+                ],
+            ],
+            ...$guzzleAuthOptions
+        );
+
+        $methodArgs[1] = $options;
+
+        return $methodArgs;
     }
 
     /**

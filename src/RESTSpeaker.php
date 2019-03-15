@@ -28,6 +28,9 @@ final class RESTSpeaker extends HTTPSpeaker
     /** @var RESTAuth */
     protected $authStrat;
 
+    /** @var string */
+    protected $mimeType = 'application/json';
+
     public function __construct(RESTAuth $authStrat, string $baseURI = '', HTTPSpeaker $http = null)
     {
         parent::__construct($baseURI);
@@ -42,29 +45,10 @@ final class RESTSpeaker extends HTTPSpeaker
 
     public function __call(string $name, array $arguments)
     {
-        $mergeGuzzleHTTPOptions = function(array $methodArgs): array {
-            $userOptions = $methodArgs[1] ?? [];
-            $options = array_merge_recursive(
-                $userOptions,
-                [
-                    'headers' => [
-                        // @todo: Figure out how to include a real version number.
-                        'User-Agent'   => 'PHPExperts/RESTSpeaker/1.0 (PHP 7)',
-                        'Content-Type' => 'application/json',
-                    ],
-                ],
-                $this->authStrat->generateGuzzleAuthOptions()
-            );
-
-            $methodArgs[1] = $options;
-
-            return $methodArgs;
-        };
-
         // Literally any method name is callable in Guzzle, so there's no need to check is_callable().
         // Automagically inject auth headers into the RESTful methods.
         if (in_array($name, ['get', 'post', 'put', 'patch', 'delete'])) {
-            $arguments = $mergeGuzzleHTTPOptions($arguments);
+            $arguments = $this->http->mergeGuzzleOptions($arguments, [$this->authStrat->generateGuzzleAuthOptions()]);
         }
 
         $response = $this->http->$name(...$arguments);
