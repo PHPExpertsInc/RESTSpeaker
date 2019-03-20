@@ -27,6 +27,7 @@ class RESTAuthTest extends TestCase
         $expectedError = 'Cannot instantiate abstract class ' . RESTAuth::class;
 
         try {
+            /** @noinspection PhpParamsInspection */
             new RESTAuth();
             self::fail('Error: Somehow instantiated RESTAuth');
         } catch (Error $e) {
