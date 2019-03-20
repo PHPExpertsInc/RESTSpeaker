@@ -49,4 +49,31 @@ class HTTPSpeakerTest extends TestCase
         self::assertEquals($expected, $actual);
         self::assertEquals($expectedBody, $actual->getBody());
     }
+
+    public function testIdentifiesAsItsOwnUserAgent()
+    {
+        $this->guzzleHandler->append(
+            new Response(200, ['Content-Type' => 'text/html'], '')
+        );
+
+        $this->http->get('https://somewhere.com/');
+        $requestHeaders = $this->guzzleHandler->getLastRequest()->getHeaders();
+
+        $phpV = phpversion();
+        $expected = "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})";
+        self::assertEquals($expected, $requestHeaders['User-Agent'][0]);
+    }
+
+    public function testRequestsTextHtmlContentType()
+    {
+        $this->guzzleHandler->append(
+            new Response(200, [], '')
+        );
+
+        $this->http->get('https://somewhere.com/');
+        $requestHeaders = $this->guzzleHandler->getLastRequest()->getHeaders();
+
+        $expected = 'text/html';
+        self::assertEquals($expected, $requestHeaders['Content-Type'][0]);
+    }
 }

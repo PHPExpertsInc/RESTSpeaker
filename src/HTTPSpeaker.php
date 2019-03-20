@@ -39,13 +39,15 @@ class HTTPSpeaker
     public function mergeGuzzleOptions(array $methodArgs, array $guzzleAuthOptions): array
     {
         $userOptions = $methodArgs[1] ?? [];
+        $phpV = phpversion();
+
         $options = array_merge_recursive(
             $userOptions,
             [
                 'headers' => [
                     // @todo: Figure out how to include a real version number.
-                    'User-Agent'   => 'PHPExperts/RESTSpeaker/1.0 (PHP 7)',
-                    'Content-Type' => $this->mimeType,
+                    'User-Agent'   => "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})",
+                    'Content-Type' => $guzzleAuthOptions[0]['Content-Type'] ?? $this->mimeType,
                 ],
             ],
             ...$guzzleAuthOptions
@@ -65,6 +67,8 @@ class HTTPSpeaker
      */
     public function __call(string $name, array $arguments)
     {
+        $arguments = $this->mergeGuzzleOptions($arguments, []);
+
         // Literally any method name is callable in Guzzle, so there's no need to check.
         return $this->http->$name(...$arguments);
     }

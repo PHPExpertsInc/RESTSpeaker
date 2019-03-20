@@ -17,9 +17,7 @@ namespace PHPExperts\RESTSpeaker\Tests;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
 use GuzzleHttp\Psr7\Response;
-use LogicException;
 use PHPExperts\RESTSpeaker\HTTPSpeaker;
-use PHPExperts\RESTSpeaker\RESTAuth;
 use PHPExperts\RESTSpeaker\RESTSpeaker;
 use PHPUnit\Framework\TestCase;
 
@@ -129,4 +127,16 @@ class RESTSpeakerTest extends TestCase
         self::assertEquals($response, $actual);
         self::assertEquals($expectedBody, $actual->getBody());
     }
-}
+
+    public function testRequestsApplicationJsonContentType()
+    {
+        $this->guzzleHandler->append(
+            new Response(200, [], '')
+        );
+
+        $this->api->get('https://somewhere.com/');
+        $requestHeaders = $this->guzzleHandler->getLastRequest()->getHeaders();
+
+        $expected = 'application/json';
+        self::assertEquals($expected, $requestHeaders['Content-Type'][0]);
+    }}
