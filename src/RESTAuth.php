@@ -17,6 +17,17 @@ namespace PHPExperts\RESTSpeaker;
 use LogicException;
 use RuntimeException;
 
+if (!function_exists('env')) {
+    function env($key, $default='')
+    {
+        $setting = getenv($key);
+        if ($setting === false) {
+            $setting = $default;
+        }
+
+        return $setting;
+    }
+}
 
 abstract class RESTAuth implements RESTAuthDriver
 {

@@ -24,9 +24,6 @@
         "ext-curl": "*",
         "ext-json": "*",
         "guzzlehttp/guzzle": "^6.3",
-        "psr/log": "^1.1",
-        "monolog/monolog": "^1.24",
-        "illuminate/log": "~5",
         "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {

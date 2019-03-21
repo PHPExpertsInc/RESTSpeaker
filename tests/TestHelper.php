@@ -25,7 +25,6 @@ final class TestHelper
         // Create the temp .env.
         $tempFile = tempnam(sys_get_temp_dir(), 'resttest-');
         file_put_contents($tempFile, implode("\n", $configs));
-
         // Load Dotenv with the new .env.
         $dotenv = Dotenv::create(sys_get_temp_dir(), basename($tempFile));
         $dotenv->load();
