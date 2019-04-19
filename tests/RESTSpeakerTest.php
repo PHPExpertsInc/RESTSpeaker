@@ -139,4 +139,49 @@ class RESTSpeakerTest extends TestCase
 
         $expected = 'application/json';
         self::assertEquals($expected, $requestHeaders['Content-Type'][0]);
-    }}
+    }
+
+    public function testCanGetTheLastRawResponse()
+    {
+        // Test returns null with no request.
+        self::assertSame(null, $this->api->getLastResponse());
+
+        // Test normal requests.
+        $statuses = [
+            new Response(200, ['Content-Type' => 'application/json'], '{"hello": "world"}'),
+            new Response(204, [], ''),
+            new Response(400, [], ''),
+        ];
+
+        foreach ($statuses as $expected) {
+        $expected = $statuses[0];
+            $this->guzzleHandler->append($expected);
+            $expectedJson = json_decode((string) $expected->getBody());
+
+            $actualJSON = $this->api->get('https://somewhere.com/');
+            $this->assertSame($expected, $this->api->getLastResponse());
+
+            $this->assertEquals($expectedJson, $actualJSON);
+        }
+    }
+
+    public function testCanGetTheLastStatusCode()
+    {
+        // Test returns -1 with no request.
+        self::assertSame(-1, $this->api->getLastStatusCode());
+
+        // Test normal requests.
+        $statuses = [
+            200 => new Response(200, ['Content-Type' => 'application/json'], '{"hello": "world"}'),
+            204 => new Response(204, [], ''),
+            400 => new Response(400, [], ''),
+        ];
+
+        foreach ($statuses as $expected => $statusResponse) {
+            $this->guzzleHandler->append($statusResponse);
+
+            $this->api->get('https://somewhere.com/');
+            $this->assertSame($expected, $this->api->getLastStatusCode());
+        }
+    }
+}

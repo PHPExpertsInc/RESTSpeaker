@@ -16,6 +16,7 @@ namespace PHPExperts\RESTSpeaker;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface as iGuzzleClient;
+use GuzzleHttp\Psr7\Response;
 
 /**
  * @mixin GuzzleClient
@@ -27,6 +28,9 @@ class HTTPSpeaker
 
     /** @var string */
     protected $mimeType = 'text/html';
+
+    /** @var Response */
+    protected $lastResponse;
 
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
@@ -58,6 +62,20 @@ class HTTPSpeaker
         return $methodArgs;
     }
 
+    public function getLastResponse(): ?Response
+    {
+        return $this->lastResponse;
+    }
+
+    public function getLastStatusCode(): int
+    {
+        if (!$this->lastResponse || !($this->lastResponse instanceof Response)) {
+            return -1;
+        }
+
+        return $this->lastResponse->getStatusCode();
+    }
+
     /**
      * Uses the Composition Pattern with Guzzle.
      *
@@ -70,6 +88,8 @@ class HTTPSpeaker
         $arguments = $this->mergeGuzzleOptions($arguments, []);
 
         // Literally any method name is callable in Guzzle, so there's no need to check.
-        return $this->http->$name(...$arguments);
+        $this->lastResponse = $this->http->$name(...$arguments);
+
+        return $this->lastResponse;
     }
 }

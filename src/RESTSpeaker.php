@@ -20,7 +20,7 @@ use GuzzleHttp\Psr7\Response;
 /**
  * @mixin GuzzleClient
  */
-final class RESTSpeaker extends HTTPSpeaker
+final class RESTSpeaker
 {
     /** @var HTTPSpeaker Use this when you need the raw GuzzleHTTP. */
     public $http;
@@ -31,10 +31,11 @@ final class RESTSpeaker extends HTTPSpeaker
     /** @var string */
     protected $mimeType = 'application/json';
 
+    /** @var Response */
+    protected $lastResponse;
+
     public function __construct(RESTAuth $authStrat, string $baseURI = '', HTTPSpeaker $http = null)
     {
-        parent::__construct($baseURI);
-
         $this->authStrat = $authStrat;
 
         if (!$http) {
@@ -52,10 +53,11 @@ final class RESTSpeaker extends HTTPSpeaker
         $arguments = $this->http->mergeGuzzleOptions($arguments, [$restOptions]);
 
         $response = $this->http->$name(...$arguments);
+        $this->lastResponse = $response;
 
         if ($response instanceof Response) {
             // If empty, bail.
-            $responseData = $response->getBody()->getContents();
+            $responseData = (string) $response->getBody();
             if (empty($responseData)) {
                 return null;
             }
@@ -69,5 +71,15 @@ final class RESTSpeaker extends HTTPSpeaker
 
         // Nothing worked out, so let's return what we got.
         return $response;
+    }
+
+    public function getLastResponse(): ?Response
+    {
+        return $this->lastResponse;
+    }
+
+    public function getLastStatusCode(): int
+    {
+        return $this->http->getLastStatusCode();
     }
 }

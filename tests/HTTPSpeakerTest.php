@@ -76,4 +76,44 @@ class HTTPSpeakerTest extends TestCase
         $expected = 'text/html';
         self::assertEquals($expected, $requestHeaders['Content-Type'][0]);
     }
+
+    public function testCanGetTheLastRawResponse()
+    {
+        // Test returns null with no request.
+        self::assertSame(null, $this->http->getLastResponse());
+
+        // Test normal requests.
+        $statuses = [
+            new Response(200, ['Content-Type' => 'application/json'], '{"hello": "world"}'),
+            new Response(204, [], ''),
+            new Response(400, [], ''),
+        ];
+
+        foreach ($statuses as $status) {
+            $this->guzzleHandler->append($status);
+
+            $expected = $this->http->get('https://somewhere.com/');
+            $this->assertSame($expected, $this->http->getLastResponse());
+        }
+    }
+
+    public function testCanGetTheLastStatusCode()
+    {
+        // Test returns -1 with no request.
+        self::assertSame(-1, $this->http->getLastStatusCode());
+
+        // Test normal requests.
+        $statuses = [
+            new Response(200, ['Content-Type' => 'application/json'], '{"hello": "world"}'),
+            new Response(204, [], ''),
+            new Response(400, [], ''),
+        ];
+
+        foreach ($statuses as $status) {
+            $this->guzzleHandler->append($status);
+
+            $expected = $this->http->get('https://somewhere.com/');
+            $this->assertSame($expected->getStatusCode(), $this->http->getLastStatusCode());
+        }
+    }
 }
