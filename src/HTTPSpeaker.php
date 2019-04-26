@@ -47,13 +47,13 @@ class HTTPSpeaker
 
         $options = array_merge_recursive(
             $userOptions,
-            [
+ /*           [
                 'headers' => [
                     // @todo: Figure out how to include a real version number.
                     'User-Agent'   => "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})",
                     'Content-Type' => $guzzleAuthOptions[0]['Content-Type'] ?? $this->mimeType,
                 ],
-            ],
+	   ],*/
             ...$guzzleAuthOptions
         );
 
