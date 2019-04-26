@@ -85,8 +85,6 @@ class HTTPSpeaker
      */
     public function __call(string $name, array $arguments)
     {
-        $arguments = $this->mergeGuzzleOptions($arguments, []);
-
         // Literally any method name is callable in Guzzle, so there's no need to check.
         $this->lastResponse = $this->http->$name(...$arguments);
 

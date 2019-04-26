@@ -49,8 +49,8 @@ final class RESTSpeaker
         // Literally any method name is callable in Guzzle, so there's no need to check is_callable().
         // Automagically inject auth headers into the RESTful methods.
         $restOptions = $this->authStrat->generateGuzzleAuthOptions();
-        $restOptions['Content-Type'] = 'application/json';
         $arguments = $this->http->mergeGuzzleOptions($arguments, [$restOptions]);
+        $arguments[1]['headers']['Content-Type'] = 'application/json';
 
         $response = $this->http->$name(...$arguments);
         $this->lastResponse = $response;
