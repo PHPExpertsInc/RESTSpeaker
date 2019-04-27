@@ -29,7 +29,7 @@ class HTTPSpeaker
     /** @var string */
     protected $mimeType = 'text/html';
 
-    /** @var Response */
+    /** @var Response|null */
     protected $lastResponse;
 
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
@@ -45,15 +45,16 @@ class HTTPSpeaker
         $userOptions = $methodArgs[1] ?? [];
         $phpV = phpversion();
 
+        if (!isset($methodArgs[1]['headers'])) {
+            $methodArgs[1]['headers'] = [];
+        }
+
+        // @todo: Figure out how to include a real version number.
+        $userOptions['headers']['User-Agent'] = $methodArgs[1]['headers']['User-Agent'] ?? "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})";
+        $userOptions['headers']['Content-Type'] = $methodArgs[1]['headers']['Content-Type'] ?? $this->mimeType;
+
         $options = array_merge_recursive(
             $userOptions,
- /*           [
-                'headers' => [
-                    // @todo: Figure out how to include a real version number.
-                    'User-Agent'   => "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})",
-                    'Content-Type' => $guzzleAuthOptions[0]['Content-Type'] ?? $this->mimeType,
-                ],
-	   ],*/
             ...$guzzleAuthOptions
         );
 
@@ -69,7 +70,8 @@ class HTTPSpeaker
 
     public function getLastStatusCode(): int
     {
-        if (!$this->lastResponse || !($this->lastResponse instanceof Response)) {
+        // if lastResponse === null -> true
+        if (!($this->lastResponse instanceof Response)) {
             return -1;
         }
 
@@ -85,6 +87,8 @@ class HTTPSpeaker
      */
     public function __call(string $name, array $arguments)
     {
+        $arguments = $this->mergeGuzzleOptions($arguments, []);
+
         // Literally any method name is callable in Guzzle, so there's no need to check.
         $this->lastResponse = $this->http->$name(...$arguments);
 
