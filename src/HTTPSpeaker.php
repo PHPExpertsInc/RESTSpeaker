@@ -29,7 +29,7 @@ class HTTPSpeaker
     /** @var string */
     protected $mimeType = 'text/html';
 
-    /** @var Response */
+    /** @var Response|null */
     protected $lastResponse;
 
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
@@ -70,7 +70,8 @@ class HTTPSpeaker
 
     public function getLastStatusCode(): int
     {
-        if (!$this->lastResponse || !($this->lastResponse instanceof Response)) {
+        // if lastResponse === null -> true
+        if (!($this->lastResponse instanceof Response)) {
             return -1;
         }
 
