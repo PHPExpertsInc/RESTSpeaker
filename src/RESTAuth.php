@@ -17,11 +17,11 @@ namespace PHPExperts\RESTSpeaker;
 use LogicException;
 use RuntimeException;
 
-function env($key, $default = '')
+function env($key, $default = '', $envFunc = '\env')
 {
     // Use Laravel's env() if it is present.
-    if (function_exists('\env')) {
-        return env($key, $default);
+    if (is_callable($envFunc)) {
+        return $envFunc($key, $default);
     }
 
     $setting = getenv($key);
