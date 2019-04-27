@@ -17,16 +17,19 @@ namespace PHPExperts\RESTSpeaker;
 use LogicException;
 use RuntimeException;
 
-if (!function_exists('env')) {
-    function env($key, $default='')
-    {
-        $setting = getenv($key);
-        if ($setting === false) {
-            $setting = $default;
-        }
-
-        return $setting;
+function env($key, $default = '')
+{
+    // Use Laravel's env() if it is present.
+    if (function_exists('\env')) {
+        return env($key, $default);
     }
+
+    $setting = getenv($key);
+    if ($setting === false) {
+        $setting = $default;
+    }
+
+    return $setting;
 }
 
 abstract class RESTAuth implements RESTAuthDriver
