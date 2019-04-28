@@ -134,10 +134,6 @@ PHPExperts\RESTSpeaker\Tests\RESTSpeaker
  ✔ Can get the last raw response  
  ✔ Can get the last status code  
 
-## ChangeLog
-
-Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
-
 ## Testing
 
 ```bash
