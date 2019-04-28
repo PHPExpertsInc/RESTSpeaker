@@ -107,7 +107,11 @@ Please see the [changelog](CHANGELOG.md) for more information on what has change
 # Use cases
 
 PHPExperts\RESTSpeaker\Tests\HTTPSpeaker  
- ✔ Works as a Guzzle proxy
+ ✔ Works as a Guzzle proxy  
+ ✔ Identifies as its own user agent  
+ ✔ Requests the text/html Content-Type  
+ ✔ Can get the last raw response  
+ ✔ Can get the last status code  
 
 PHPExperts\RESTSpeaker\Tests\RESTAuth  
  ✔ Cannot build itself  
@@ -117,15 +121,18 @@ PHPExperts\RESTSpeaker\Tests\RESTAuth
  ✔ Wont call a nonexisting auth strat  
  ✔ Supports no auth  
  ✔ Supports XAPI Token auth  
- ✔ Supports custom auth strategies
+ ✔ Supports custom auth strategies  
+ ✔ Has its own env() polyfill  
 
 PHPExperts\RESTSpeaker\Tests\RESTSpeaker  
  ✔ Can build itself  
  ✔ Returns null when no content  
  ✔ Works as a Guzzle proxy when not JSON  
- ✔ JSON URLs return plain PHP arrays
- ✔ Can fall down to HTTPSpeaker
-
+ ✔ JSON URLs return plain PHP arrays  
+ ✔ Can fall down to HTTPSpeaker  
+ ✔ Requests the application/json Content-Type  
+ ✔ Can get the last raw response  
+ ✔ Can get the last status code  
 
 ## ChangeLog
 
