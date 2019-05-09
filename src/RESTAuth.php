@@ -17,21 +17,6 @@ namespace PHPExperts\RESTSpeaker;
 use LogicException;
 use RuntimeException;
 
-function env($key, $default = '', $envFunc = '\env')
-{
-    // Use Laravel's env() if it is present.
-    if (is_callable($envFunc)) {
-        return $envFunc($key, $default);
-    }
-
-    $setting = getenv($key);
-    if ($setting === false) {
-        $setting = $default;
-    }
-
-    return $setting;
-}
-
 abstract class RESTAuth implements RESTAuthDriver
 {
     public const AUTH_NONE = 'NoAuth';
