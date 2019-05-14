@@ -138,7 +138,9 @@ class RESTAuthTest extends TestCase
         TestHelper::loadTestEnv(['X_API_KEY=mySecret']);
 
         $expected = [
-            "X-API-Key" => "mySecret"
+            'headers' => [
+                'X-API-Key' => 'mySecret',
+            ],
         ];
         $actual = $restAuth->generateGuzzleAuthOptions();
         self::assertEquals($expected, $actual);

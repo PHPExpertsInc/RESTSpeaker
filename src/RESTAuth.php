@@ -85,8 +85,10 @@ abstract class RESTAuth implements RESTAuthDriver
             throw new LogicException('X_API_KEY has not been set in .env.');
         }
 
-        return [
-            'X-API-Key' => $apiKey,
+	return [
+            'headers' => [
+                'X-API-Key' => $apiKey,
+            ],
         ];
     }
 
