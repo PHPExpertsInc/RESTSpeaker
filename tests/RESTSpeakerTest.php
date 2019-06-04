@@ -29,7 +29,7 @@ class RESTSpeakerTest extends TestCase
     /** @var MockHandler */
     protected $guzzleHandler;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
