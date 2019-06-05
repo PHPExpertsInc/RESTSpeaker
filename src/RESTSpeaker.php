@@ -15,11 +15,26 @@
 namespace PHPExperts\RESTSpeaker;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\UriInterface;
 
 /**
  * @mixin GuzzleClient
- */
+ * @method ResponseInterface|object|null get(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface             head(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface|object|null put(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface|object|null post(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface|object|null patch(string|UriInterface $uri, array $options = [])
+ * @method ResponseInterface|object|null delete(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              getAsync(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              headAsync(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              putAsync(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              postAsync(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              patchAsync(string|UriInterface $uri, array $options = [])
+ * @method PromiseInterface              deleteAsync(string|UriInterface $uri, array $options = [])
+*/
 final class RESTSpeaker
 {
     /** @var HTTPSpeaker Use this when you need the raw GuzzleHTTP. */
