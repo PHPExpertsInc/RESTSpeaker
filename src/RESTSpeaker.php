@@ -35,7 +35,7 @@ use Psr\Http\Message\UriInterface;
  * @method PromiseInterface              patchAsync(string|UriInterface $uri, array $options = [])
  * @method PromiseInterface              deleteAsync(string|UriInterface $uri, array $options = [])
 */
-final class RESTSpeaker
+class RESTSpeaker
 {
     /** @var HTTPSpeaker Use this when you need the raw GuzzleHTTP. */
     public $http;
