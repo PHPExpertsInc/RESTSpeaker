@@ -23,7 +23,9 @@
         "php": ">=7.1",
         "ext-curl": "*",
         "ext-json": "*",
-        "guzzlehttp/guzzle": "^6.3",
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "suggests": {
         "vlucas/phpdotenv": "^3.3",
         "phpexperts/laravel-env-polyfill": "1.*"
     },
