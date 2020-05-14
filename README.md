@@ -133,6 +133,8 @@ PHPExperts\RESTSpeaker\Tests\RESTSpeaker
  ✔ Requests the application/json Content-Type  
  ✔ Can get the last raw response  
  ✔ Can get the last status code  
+ ✔ Will automagically pass arrays as JSON via POST, PATCH and PUT.
+ ✔ Will automagically pass objects as JSON via POST, PATCH and PUT.
 
 ## Testing
 
