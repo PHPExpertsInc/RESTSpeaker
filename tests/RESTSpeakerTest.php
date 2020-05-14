@@ -3,7 +3,7 @@
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
  *
- * Copyright © 2019 PHP Experts, Inc.
+ * Copyright © 2019-2020 PHP Experts, Inc.
  * Author: Theodore R. Smith <theodore@phpexperts.pro>
  *  GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
  *  https://www.phpexperts.pro/
@@ -16,6 +16,7 @@ namespace PHPExperts\RESTSpeaker\Tests;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\Handler\MockHandler;
+use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
 use PHPExperts\RESTSpeaker\HTTPSpeaker;
 use PHPExperts\RESTSpeaker\RESTSpeaker;
@@ -154,13 +155,12 @@ class RESTSpeakerTest extends TestCase
         ];
 
         foreach ($statuses as $expected) {
-        $expected = $statuses[0];
+            $expected = $statuses[0];
             $this->guzzleHandler->append($expected);
             $expectedJson = json_decode((string) $expected->getBody());
 
             $actualJSON = $this->api->get('https://somewhere.com/');
             $this->assertSame($expected, $this->api->getLastResponse());
-
             $this->assertEquals($expectedJson, $actualJSON);
         }
     }
@@ -182,6 +182,48 @@ class RESTSpeakerTest extends TestCase
 
             $this->api->get('https://somewhere.com/');
             $this->assertSame($expected, $this->api->getLastStatusCode());
+        }
+    }
+
+    /** @testdox Will automagically pass arrays as JSON via POST, PATCH and PUT. */
+    public function testWillAutomagicallyPassJSONArrays()
+    {
+        $methods = ['post', 'patch', 'put'];
+        foreach ($methods as $method) {
+            $expectedJSON = sprintf('{"hello":"%s"}', $method);
+            $expectedResponse = json_decode($expectedJSON);
+            $payload = json_decode($expectedJSON, true);
+            $this->guzzleHandler->append(new Response(200, ['Content-Type' => 'application/json'], $expectedJSON));
+
+            $response = $this->api->$method("/$method", $payload);
+            self::assertEquals($expectedResponse, $response);
+
+            $actualRequest = $this->guzzleHandler->getLastRequest();
+            self::assertInstanceOf(Request::class, $actualRequest);
+
+            $actualJSON = (string) $actualRequest->getBody();
+            self::assertEquals($expectedJSON, $actualJSON);
+        }
+    }
+
+    /** @testdox Will automagically pass objects as JSON via POST, PATCH and PUT. */
+    public function testWillAutomagicallyPassJSONObjects()
+    {
+        $methods = ['post', 'patch', 'put'];
+        foreach ($methods as $method) {
+            $expectedJSON = sprintf('{"hello":"%s"}', $method);
+            $expectedResponse = json_decode($expectedJSON);
+            $payload = json_decode($expectedJSON);
+            $this->guzzleHandler->append(new Response(200, ['Content-Type' => 'application/json'], $expectedJSON));
+
+            $response = $this->api->$method("/$method", $payload);
+            self::assertEquals($expectedResponse, $response);
+
+            $actualRequest = $this->guzzleHandler->getLastRequest();
+            self::assertInstanceOf(Request::class, $actualRequest);
+
+            $actualJSON = (string) $actualRequest->getBody();
+            self::assertEquals($expectedJSON, $actualJSON);
         }
     }
 }

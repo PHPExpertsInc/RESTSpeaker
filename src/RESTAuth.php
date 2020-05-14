@@ -3,7 +3,7 @@
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
  *
- * Copyright © 2019 PHP Experts, Inc.
+ * Copyright © 2019-2020 PHP Experts, Inc.
  * Author: Theodore R. Smith <theodore@phpexperts.pro>
  *  GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
  *  https://www.phpexperts.pro/
@@ -85,7 +85,7 @@ abstract class RESTAuth implements RESTAuthDriver
             throw new LogicException('X_API_KEY has not been set in .env.');
         }
 
-	return [
+        return [
             'headers' => [
                 'X-API-Key' => $apiKey,
             ],
