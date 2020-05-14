@@ -24,9 +24,6 @@ use Psr\Http\Message\UriInterface;
  * @mixin GuzzleClient
  * @method ResponseInterface|object|null get(string|UriInterface $uri, array $options = [])
  * @method ResponseInterface             head(string|UriInterface $uri, array $options = [])
- * @method ResponseInterface|object|null put(string|UriInterface $uri, array $options = [])
- * @method ResponseInterface|object|null post(string|UriInterface $uri, array $options = [])
- * @method ResponseInterface|object|null patch(string|UriInterface $uri, array $options = [])
  * @method ResponseInterface|object|null delete(string|UriInterface $uri, array $options = [])
  * @method PromiseInterface              getAsync(string|UriInterface $uri, array $options = [])
  * @method PromiseInterface              headAsync(string|UriInterface $uri, array $options = [])
@@ -42,9 +39,6 @@ class RESTSpeaker
 
     /** @var RESTAuth */
     protected $authStrat;
-
-    /** @var string */
-    protected $mimeType = 'application/json';
 
     /** @var Response */
     protected $lastResponse;
@@ -86,6 +80,55 @@ class RESTSpeaker
 
         // Nothing worked out, so let's return what we got.
         return $response;
+    }
+
+    /**
+     * @param string              $method
+     * @param string|UriInterface $uri
+     * @param mixed               $body
+     * @param array               $options
+     * @return ResponseInterface|object|null
+     */
+    protected function callWithBody(string $method, $uri, $body, array $options = [])
+    {
+        if ($body !== null) {
+            $options['json'] = $body;
+        }
+
+        return $this->__call($method, [$uri, $options]);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array|object|null   $body
+     * @param array               $options
+     * @return ResponseInterface|object|null
+     */
+    public function put($uri, $body = null, array $options = [])
+    {
+        return $this->callWithBody('put', $uri, $body, $options);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array|object|null   $body
+     * @param array               $options
+     * @return ResponseInterface|object|null
+     */
+    public function post($uri, $body = null, array $options = [])
+    {
+        return $this->callWithBody('post', $uri, $body, $options);
+    }
+
+    /**
+     * @param string|UriInterface $uri
+     * @param array|object|null   $body
+     * @param array               $options
+     * @return ResponseInterface|object|null
+     */
+    public function patch($uri, $body = null, array $options = [])
+    {
+        return $this->callWithBody('patch', $uri, $body, $options);
     }
 
     public function getLastResponse(): ?Response
