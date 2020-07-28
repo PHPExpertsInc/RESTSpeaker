@@ -53,6 +53,12 @@ class RESTSpeaker
         $this->http = $http;
     }
 
+    /**
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return mixed
+     */
     public function __call(string $name, array $arguments)
     {
         // Literally any method name is callable in Guzzle, so there's no need to check is_callable().
