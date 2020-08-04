@@ -51,7 +51,7 @@ abstract class RESTAuth implements RESTAuthDriver
         $this->authMode = $authStratMode;
     }
 
-    public function setApiClient(RESTSpeaker $apiClient)
+    public function setApiClient(RESTSpeaker $apiClient): void
     {
         $this->api = $apiClient;
     }
