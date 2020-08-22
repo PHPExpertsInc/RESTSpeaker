@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
@@ -28,7 +28,7 @@ class HTTPSpeakerTest extends TestCase
     /** @var MockHandler */
     protected $guzzleHandler;
 
-    public function setUp(): void
+    public function setUp()
     {
         parent::setUp();
 

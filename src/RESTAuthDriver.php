@@ -1,9 +1,9 @@
-<?php declare(strict_types=1);
+<?php
 
 namespace PHPExperts\RESTSpeaker;
 
 interface RESTAuthDriver
 {
-    public function setApiClient(RESTSpeaker $apiClient): void;
-    public function generateGuzzleAuthOptions(): array;
+    public function setApiClient(RESTSpeaker $apiClient);
+    public function generateGuzzleAuthOptions();
 }

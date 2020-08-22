@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
@@ -43,7 +43,14 @@ class RESTSpeaker
     /** @var Response */
     protected $lastResponse;
 
-    public function __construct(RESTAuth $authStrat, string $baseURI = '', HTTPSpeaker $http = null)
+    /**
+     * RESTSpeaker constructor.
+     *
+     * @param RESTAuth         $authStrat
+     * @param string           $baseURI
+     * @param HTTPSpeaker|null $http
+     */
+    public function __construct(RESTAuth $authStrat, $baseURI = '', HTTPSpeaker $http = null)
     {
         $this->authStrat = $authStrat;
 
@@ -59,7 +66,7 @@ class RESTSpeaker
      *
      * @return mixed
      */
-    public function __call(string $name, array $arguments)
+    public function __call($name, array $arguments)
     {
         // Literally any method name is callable in Guzzle, so there's no need to check is_callable().
         // Automagically inject auth headers into the RESTful methods.
@@ -95,7 +102,7 @@ class RESTSpeaker
      * @param array               $options
      * @return ResponseInterface|object|null
      */
-    protected function callWithBody(string $method, $uri, $body, array $options = [])
+    protected function callWithBody($method, $uri, $body, array $options = [])
     {
         if ($body !== null) {
             $options['json'] = $body;
@@ -137,12 +144,15 @@ class RESTSpeaker
         return $this->callWithBody('patch', $uri, $body, $options);
     }
 
-    public function getLastResponse(): ?Response
+    /**
+     * @return Response|null
+     */
+    public function getLastResponse()
     {
         return $this->lastResponse;
     }
 
-    public function getLastStatusCode(): int
+    public function getLastStatusCode()
     {
         return $this->http->getLastStatusCode();
     }

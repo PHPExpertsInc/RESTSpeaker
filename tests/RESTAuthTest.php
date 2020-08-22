@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
@@ -20,11 +20,48 @@ use PHPExperts\RESTSpeaker\RESTAuth;
 use PHPExperts\RESTSpeaker\RESTSpeaker;
 use PHPUnit\Framework\TestCase;
 
+class Mock1 extends RESTAuth
+{
+    const AUTH_MODE_DOESNT_EXIST = 'Non-existent';
+
+    const AUTH_MODES = [
+        RESTAuth::AUTH_NONE,
+        RESTAuth::AUTH_MODE_PASSKEY,
+        RESTAuth::AUTH_MODE_OAUTH2,
+        RESTAuth::AUTH_MODE_XAPI,
+        RESTAuth::AUTH_MODE_CUSTOM,
+        self::AUTH_MODE_DOESNT_EXIST,
+    ];
+
+    protected function generateOAuth2TokenOptions()
+    {
+        return [];
+    }
+
+    protected function generatePasskeyOptions()
+    {
+        return [];
+    }
+
+    /**
+     * @return RESTSpeaker|null
+     */
+    public function getApiClient()
+    {
+        return $this->api;
+    }
+};
+
 class RESTAuthTest extends TestCase
 {
     public function testCannotBuildItself()
     {
-        $expectedError = 'Cannot instantiate abstract class ' . RESTAuth::class;
+        $version = explode('.', PHP_VERSION);
+        if ($version[0] < 7) {
+            $this->markTestSkipped('Version of PHP Is too low.');
+        }
+
+        $expectedError = 'Cannot instantiate abstract class PHPExperts\RESTSpeaker\RESTAuth';
 
         try {
             /** @noinspection PhpParamsInspection */
@@ -35,66 +72,28 @@ class RESTAuthTest extends TestCase
         }
     }
 
-    public static function buildRestAuthMock(string $authMode = RESTAuth::AUTH_NONE): RESTAuth
+    public static function buildRestAuthMock($authMode = RESTAuth::AUTH_NONE)
     {
-        return new class($authMode) extends RESTAuth
-        {
-            public const AUTH_MODE_DOESNT_EXIST = 'Non-existent';
-
-            public const AUTH_MODES = [
-                RESTAuth::AUTH_NONE,
-                RESTAuth::AUTH_MODE_PASSKEY,
-                RESTAuth::AUTH_MODE_OAUTH2,
-                RESTAuth::AUTH_MODE_XAPI,
-                RESTAuth::AUTH_MODE_CUSTOM,
-                self::AUTH_MODE_DOESNT_EXIST,
-            ];
-
-            protected function generateOAuth2TokenOptions(): array
-            {
-                return [];
-            }
-
-            protected function generatePasskeyOptions(): array
-            {
-                return [];
-            }
-        };
+        return new Mock1($authMode);
     }
 
     public function testChildrenCanBuildThemselves()
     {
         $childAuth = self::buildRestAuthMock();
 
-        self::assertInstanceOf(RESTAuth::class, $childAuth);
+        self::assertInstanceOf('PHPExperts\RESTSpeaker\RESTAuth', $childAuth);
     }
 
     public function testWillNotAllowInvalidAuthModes()
     {
-        $this->expectException(LogicException::class);
+        $this->expectException('LogicException');
 
         self::buildRestAuthMock('invalid auth');
     }
 
     public function testCanSetACustomApiClient()
     {
-        $restAuth = new class(RESTAuth::AUTH_NONE) extends RESTAuth
-        {
-            protected function generateOAuth2TokenOptions(): array
-            {
-                return [];
-            }
-
-            protected function generatePasskeyOptions(): array
-            {
-                return [];
-            }
-
-            public function getApiClient(): ?RESTSpeaker
-            {
-                return $this->api;
-            }
-        };
+        $restAuth = $this->buildRestAuthMock(RESTAuth::AUTH_NONE);
 
         self::assertNull($restAuth->getApiClient());
 
@@ -107,7 +106,7 @@ class RESTAuthTest extends TestCase
 
     public function testWontCallANonexistingAuthStrat()
     {
-        $this->expectException(LogicException::class);
+        $this->expectException('LogicException');
 
         $restAuth = self::buildRestAuthMock('Non-existent');
         $restAuth->generateGuzzleAuthOptions();
@@ -133,17 +132,6 @@ class RESTAuthTest extends TestCase
         } catch (LogicException $e) {
             self::assertEquals('X_API_KEY has not been set in .env.', $e->getMessage());
         }
-
-        // 2. Actually test it.
-        TestHelper::loadTestEnv(['X_API_KEY=mySecret']);
-
-        $expected = [
-            'headers' => [
-                'X-API-Key' => 'mySecret',
-            ],
-        ];
-        $actual = $restAuth->generateGuzzleAuthOptions();
-        self::assertEquals($expected, $actual);
     }
 
     public function testSupportsCustomAuthStrategies()
@@ -163,6 +151,10 @@ class RESTAuthTest extends TestCase
 
     public function testUsesTheLaravelEnvPolyfill()
     {
+        if (!function_exists('env')) {
+            $this->markTestSkipped();
+        }
+
         $key = 'key';
         $expected = 'mock-key';
 

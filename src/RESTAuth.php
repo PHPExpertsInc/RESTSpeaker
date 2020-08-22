@@ -1,4 +1,4 @@
-<?php declare(strict_types=1);
+<?php
 
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
@@ -19,14 +19,14 @@ use RuntimeException;
 
 abstract class RESTAuth implements RESTAuthDriver
 {
-    public const AUTH_NONE = 'NoAuth';
+    const AUTH_NONE = 'NoAuth';
     /** OAuth2 Tokens are required for prod but unavailable in the dev sandbox. **/
-    public const AUTH_MODE_PASSKEY = 'Passkey';
-    public const AUTH_MODE_OAUTH2 = 'OAuth2Token';
-    public const AUTH_MODE_XAPI = 'XAPIToken';
-    public const AUTH_MODE_CUSTOM = 'CustomAuth';
+    const AUTH_MODE_PASSKEY = 'Passkey';
+    const AUTH_MODE_OAUTH2 = 'OAuth2Token';
+    const AUTH_MODE_XAPI = 'XAPIToken';
+    const AUTH_MODE_CUSTOM = 'CustomAuth';
 
-    public const AUTH_MODES = [
+    const AUTH_MODES = [
         self::AUTH_NONE,
         self::AUTH_MODE_PASSKEY,
         self::AUTH_MODE_OAUTH2,
@@ -40,7 +40,7 @@ abstract class RESTAuth implements RESTAuthDriver
     /** @var string */
     protected $authMode;
 
-    public function __construct(string $authStratMode, RESTSpeaker $apiClient = null)
+    public function __construct($authStratMode, RESTSpeaker $apiClient = null)
     {
         if (!in_array($authStratMode, static::AUTH_MODES)) {
             throw new LogicException('Invalid REST auth mode.');
@@ -51,17 +51,17 @@ abstract class RESTAuth implements RESTAuthDriver
         $this->authMode = $authStratMode;
     }
 
-    public function setApiClient(RESTSpeaker $apiClient): void
+    public function setApiClient(RESTSpeaker $apiClient)
     {
         $this->api = $apiClient;
     }
 
-    protected function generateNoAuthOptions(): array
+    protected function generateNoAuthOptions()
     {
         return [];
     }
 
-    protected function generateCustomAuthOptions(): array
+    protected function generateCustomAuthOptions()
     {
         throw new LogicException('The base RestAuth custom auth should not be called.');
     }
@@ -71,14 +71,14 @@ abstract class RESTAuth implements RESTAuthDriver
      * @throws RuntimeException if an OAuth2 Token could not be successfully generated.
      * @return array The appropriate headers for OAuth2 Tokens.
      */
-    abstract protected function generateOAuth2TokenOptions(): array;
+    abstract protected function generateOAuth2TokenOptions();
 
     /**
      * @return array The appropriate headers for passkey authorization.
      */
-    abstract protected function generatePasskeyOptions(): array;
+    abstract protected function generatePasskeyOptions();
 
-    protected function generateXAPITokenOptions(): array
+    protected function generateXAPITokenOptions()
     {
         $apiKey = env('X_API_KEY');
         if (!$apiKey) {
@@ -92,7 +92,7 @@ abstract class RESTAuth implements RESTAuthDriver
         ];
     }
 
-    public function generateGuzzleAuthOptions(): array
+    public function generateGuzzleAuthOptions()
     {
         $handler = "generate{$this->authMode}Options";
         if (!is_callable([$this, $handler])) {
@@ -100,5 +100,17 @@ abstract class RESTAuth implements RESTAuthDriver
         }
 
         return $this->$handler();
+    }
+}
+
+if (!function_exists('env')) {
+    function env($key, $default = '')
+    {
+        $value = getenv($key);
+        if ($value === null) {
+            $value = $default;
+        }
+
+        return $value;
     }
 }
