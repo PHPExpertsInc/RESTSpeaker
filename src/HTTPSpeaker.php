@@ -15,13 +15,15 @@
 namespace PHPExperts\RESTSpeaker;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface;
 use GuzzleHttp\ClientInterface as iGuzzleClient;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 
 /**
  * @mixin GuzzleClient
  */
-class HTTPSpeaker
+class HTTPSpeaker implements ClientInterface
 {
     /** @var iGuzzleClient|GuzzleClient */
     protected $http;
@@ -93,5 +95,31 @@ class HTTPSpeaker
         $this->lastResponse = $this->http->$name(...$arguments);
 
         return $this->lastResponse;
+    }
+
+    // BEGIN ClientInterface marshals.
+    public function send(RequestInterface $request, array $options = [])
+    {
+        return $this->http->send($request, $options);
+    }
+
+    public function sendAsync(RequestInterface $request, array $options = [])
+    {
+        return $this->http->sendAsync($request, $options);
+    }
+
+    public function request($method, $uri, array $options = [])
+    {
+        return $this->http->request($method, $uri, $options);
+    }
+
+    public function requestAsync($method, $uri, array $options = [])
+    {
+        return $this->http->requestAsync($method, $uri, $options);
+    }
+
+    public function getConfig($option = null)
+    {
+        return $this->http->getConfig();
     }
 }

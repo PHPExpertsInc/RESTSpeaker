@@ -123,6 +123,7 @@ PHPExperts\RESTSpeaker\Tests\RESTAuth
  ✔ Supports XAPI Token auth  
  ✔ Supports custom auth strategies  
  ✔ Has its own env() polyfill  
+ ✔ Implements Guzzle's PSR-18 ClientInterface interface.  
 
 PHPExperts\RESTSpeaker\Tests\RESTSpeaker  
  ✔ Can build itself  
@@ -133,8 +134,9 @@ PHPExperts\RESTSpeaker\Tests\RESTSpeaker
  ✔ Requests the application/json Content-Type  
  ✔ Can get the last raw response  
  ✔ Can get the last status code  
- ✔ Will automagically pass arrays as JSON via POST, PATCH and PUT.
- ✔ Will automagically pass objects as JSON via POST, PATCH and PUT.
+ ✔ Will automagically pass arrays as JSON via POST, PATCH and PUT.  
+ ✔ Will automagically pass objects as JSON via POST, PATCH and PUT.  
+ ✔ Implements Guzzle's PSR-18 ClientInterface interface.  
 
 ## Testing
 
