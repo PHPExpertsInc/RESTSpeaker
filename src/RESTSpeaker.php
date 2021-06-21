@@ -15,8 +15,11 @@
 namespace PHPExperts\RESTSpeaker;
 
 use GuzzleHttp\Client as GuzzleClient;
+use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\UriInterface;
 
@@ -32,7 +35,7 @@ use Psr\Http\Message\UriInterface;
  * @method PromiseInterface              patchAsync(string|UriInterface $uri, array $options = [])
  * @method PromiseInterface              deleteAsync(string|UriInterface $uri, array $options = [])
 */
-class RESTSpeaker
+class RESTSpeaker implements ClientInterface
 {
     /** @var HTTPSpeaker Use this when you need the raw GuzzleHTTP. */
     public $http;
@@ -145,5 +148,31 @@ class RESTSpeaker
     public function getLastStatusCode(): int
     {
         return $this->http->getLastStatusCode();
+    }
+
+    // BEGIN ClientInterface marshals.
+    public function send(RequestInterface $request, array $options = [])
+    {
+        return $this->http->send($request, $options);
+    }
+
+    public function sendAsync(RequestInterface $request, array $options = [])
+    {
+        return $this->http->sendAsync($request, $options);
+    }
+
+    public function request($method, $uri, array $options = [])
+    {
+        return $this->http->request($method, $uri, $options);
+    }
+
+    public function requestAsync($method, $uri, array $options = [])
+    {
+        return $this->http->requestAsync($method, $uri, $options);
+    }
+
+    public function getConfig($option = null)
+    {
+        return $this->http->getConfig();
     }
 }

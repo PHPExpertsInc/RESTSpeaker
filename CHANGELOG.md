@@ -2,6 +2,10 @@
 
 All notable changes to the project will be documented in this file.
 
+## Version 2.1.0
+
+* **[2021-06-21]** Implemented Guzzle's PSR-18 ClientInterface.
+
 ## Version 2.0
 
  * **[2020-05-14]** Abstracted out the need to do ['json' => data].

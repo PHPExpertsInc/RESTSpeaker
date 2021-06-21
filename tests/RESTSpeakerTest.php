@@ -226,4 +226,10 @@ class RESTSpeakerTest extends TestCase
             self::assertEquals($expectedJSON, $actualJSON);
         }
     }
+
+    /** @testdox Implements Guzzle's PSR-18 ClientInterface interface. **/
+    public function testImplementsGuzzlesClientInterface()
+    {
+        self::assertInstanceOf(\GuzzleHttp\ClientInterface::class, $this->api);
+    }
 }

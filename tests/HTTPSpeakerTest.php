@@ -113,7 +113,13 @@ class HTTPSpeakerTest extends TestCase
             $this->guzzleHandler->append($status);
 
             $expected = $this->http->get('https://somewhere.com/');
-            $this->assertSame($expected->getStatusCode(), $this->http->getLastStatusCode());
+            self::assertSame($expected->getStatusCode(), $this->http->getLastStatusCode());
         }
+    }
+
+    /** @testdox Implements Guzzle's PSR-18 ClientInterface interface. **/ 
+    public function testImplementsGuzzlesClientInterface()
+    {
+        self::assertInstanceOf(\GuzzleHttp\ClientInterface::class, $this->http);
     }
 }
