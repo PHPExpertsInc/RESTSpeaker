@@ -17,8 +17,10 @@ namespace PHPExperts\RESTSpeaker;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\ClientInterface as iGuzzleClient;
+use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @mixin GuzzleClient
@@ -98,27 +100,32 @@ class HTTPSpeaker implements ClientInterface
     }
 
     // BEGIN ClientInterface marshals.
-    public function send(RequestInterface $request, array $options = [])
+    /** {@inheritDoc} */
+    public function send(RequestInterface $request, array $options = []): ResponseInterface
     {
         return $this->http->send($request, $options);
     }
 
-    public function sendAsync(RequestInterface $request, array $options = [])
+    /** {@inheritDoc} */
+    public function sendAsync(RequestInterface $request, array $options = []): PromiseInterface
     {
         return $this->http->sendAsync($request, $options);
     }
 
-    public function request($method, $uri, array $options = [])
+    /** {@inheritDoc} */
+    public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
         return $this->http->request($method, $uri, $options);
     }
 
-    public function requestAsync($method, $uri, array $options = [])
+    /** {@inheritDoc} */
+    public function requestAsync(string $method, $uri = '', array $options = []): PromiseInterface
     {
         return $this->http->requestAsync($method, $uri, $options);
     }
 
-    public function getConfig($option = null)
+    /** {@inheritDoc} */
+    public function getConfig(?string $option = null)
     {
         return $this->http->getConfig();
     }
