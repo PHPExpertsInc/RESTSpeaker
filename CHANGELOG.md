@@ -2,6 +2,11 @@
 
 All notable changes to the project will be documented in this file.
 
+## Version 2.2.0
+
+* **[2021-06-24 10:59:15 CDT]** Added support for Guzzle v7.
+* **[2021-06-27 18:44:52 CDT]** Upgraded to PHPUnit 9.0. 
+
 ## Version 2.1.0
 
 * **[2021-06-21]** Implemented Guzzle's PSR-18 ClientInterface.

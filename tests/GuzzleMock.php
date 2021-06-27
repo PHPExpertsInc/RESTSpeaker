@@ -16,6 +16,7 @@ namespace PHPExperts\RESTSpeaker\Tests;
 
 use GuzzleHttp\Client as GuzzleClient;
 use LogicException;
+use Psr\Http\Message\ResponseInterface;
 
 class GuzzleMock extends GuzzleClient
 {
@@ -28,7 +29,7 @@ class GuzzleMock extends GuzzleClient
     }
 
     /** @noinspection PhpMissingParentCallCommonInspection */
-    public function request($method, $uri = '', array $options = [])
+    public function request(string $method, $uri = '', array $options = []): ResponseInterface
     {
         if ($this->response === null) {
             throw new LogicException('You need to set the Guzzle Mock\'s response.');
