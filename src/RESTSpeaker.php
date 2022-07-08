@@ -180,4 +180,9 @@ class RESTSpeaker implements ClientInterface
     {
         return $this->http->getConfig();
     }
+
+    public function getAuthStrat(): RESTAuthDriver
+    {
+        return $this->authStrat;
+    }
 }
