@@ -33,12 +33,18 @@
         "phpstan/phpstan": "*",
         "symfony/var-dumper": "*",
         "phpexperts/laravel-env-polyfill": "*",
-        "phpexperts/dockerize": "^6.5"
+        "phpexperts/dockerize": "*",
+        "vlucas/phpdotenv": "^5.4"
     },
     "autoload": {
         "psr-4": { "PHPExperts\\RESTSpeaker\\" : "src/" }
     },
     "autoload-dev": {
         "psr-4": { "PHPExperts\\RESTSpeaker\\Tests\\" : "tests/" }
+    },
+    "config": {
+        "allow-plugins": {
+            "0.0.0/composer-include-files": true
+        }
     }
 }
