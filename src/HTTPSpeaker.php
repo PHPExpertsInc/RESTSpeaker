@@ -17,8 +17,12 @@ namespace PHPExperts\RESTSpeaker;
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\ClientInterface as iGuzzleClient;
+use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
+use Monolog\Handler\TestHandler;
+use Monolog\Logger;
+use Namshi\Cuzzle\Middleware\CurlFormatterMiddleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
@@ -36,10 +40,23 @@ class HTTPSpeaker implements ClientInterface
     /** @var Response|null */
     protected $lastResponse;
 
+    /** @var TestHandler */
+    public $testHandler;
+
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
+        if (class_exists(CurlFormatterMiddleware::class)) {
+            $testHandler = new TestHandler();
+
+            $logger = new Logger('guzzle.to.curl');
+            $logger->pushHandler($testHandler);
+            $handler = HandlerStack::create();
+            $handler->after('cookies', new CurlFormatterMiddleware($logger)); //add the cURL formatter middleware
+            $this->testHandler = $testHandler;
+        }
+
         if (!$guzzle) {
-            $guzzle = new GuzzleClient(['base_uri' => $baseURI]);
+            $guzzle = new GuzzleClient(['base_uri' => $baseURI, 'handler' => $this->testHandler]);
         }
         $this->http = $guzzle;
     }
@@ -113,19 +130,19 @@ class HTTPSpeaker implements ClientInterface
     }
 
     /** {@inheritDoc} */
-    public function request(string $method, $uri = '', array $options = []): ResponseInterface
+    public function request($method, $uri = '', array $options = []): ResponseInterface
     {
         return $this->http->request($method, $uri, $options);
     }
 
     /** {@inheritDoc} */
-    public function requestAsync(string $method, $uri = '', array $options = []): PromiseInterface
+    public function requestAsync($method, $uri = '', array $options = []): PromiseInterface
     {
         return $this->http->requestAsync($method, $uri, $options);
     }
 
     /** {@inheritDoc} */
-    public function getConfig(?string $option = null)
+    public function getConfig($option = null)
     {
         return $this->http->getConfig();
     }

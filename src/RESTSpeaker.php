@@ -164,20 +164,25 @@ class RESTSpeaker implements ClientInterface
     }
 
     /** {@inheritDoc} */
-    public function request(string $method, $uri = '', array $options = []): ResponseInterface
+    public function request($method, $uri = '', array $options = []): ResponseInterface
     {
         return $this->http->request($method, $uri, $options);
     }
 
     /** {@inheritDoc} */
-    public function requestAsync(string $method, $uri = '', array $options = []): PromiseInterface
+    public function requestAsync($method, $uri = '', array $options = []): PromiseInterface
     {
         return $this->http->requestAsync($method, $uri, $options);
     }
 
     /** {@inheritDoc} */
-    public function getConfig(?string $option = null)
+    public function getConfig($option = null)
     {
         return $this->http->getConfig();
+    }
+
+    public function getAuthStrat(): RESTAuthDriver
+    {
+        return $this->authStrat;
     }
 }
