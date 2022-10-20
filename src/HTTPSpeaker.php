@@ -59,6 +59,7 @@ class HTTPSpeaker implements ClientInterface
             $guzzle = new GuzzleClient([
                 'base_uri' => $baseURI,
                 'handler' => $handler,
+                'version' => '2.0',
             ]);
         }
         $this->http = $guzzle;
