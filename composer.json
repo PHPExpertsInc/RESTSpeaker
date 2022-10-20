@@ -27,7 +27,7 @@
     },
     "suggest": {
         "phpexperts/laravel-env-polyfill": "1.*",
-        "namshi/cuzzle": "2.*"
+        "octoper/cuzzle": "3.*"
     },
     "require-dev": {
         "phpunit/phpunit": "8.*|9.*",
@@ -35,7 +35,9 @@
         "symfony/var-dumper": "*",
         "phpexperts/laravel-env-polyfill": "*",
         "phpexperts/dockerize": "*",
-        "vlucas/phpdotenv": "^5.4"
+        "vlucas/phpdotenv": "^5.4",
+        "octoper/cuzzle": "^3.1",
+        "monolog/monolog": "^2.8"
     },
     "autoload": {
         "psr-4": { "PHPExperts\\RESTSpeaker\\" : "src/" }

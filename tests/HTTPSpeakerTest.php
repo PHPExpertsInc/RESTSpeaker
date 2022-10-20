@@ -60,7 +60,7 @@ class HTTPSpeakerTest extends TestCase
         $requestHeaders = $this->guzzleHandler->getLastRequest()->getHeaders();
 
         $phpV = phpversion();
-        $expected = "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})";
+        $expected = "PHPExperts/RESTSpeaker-2.4 (PHP {$phpV})";
         self::assertEquals($expected, $requestHeaders['User-Agent'][0]);
     }
 
@@ -117,9 +117,25 @@ class HTTPSpeakerTest extends TestCase
         }
     }
 
-    /** @testdox Implements Guzzle's PSR-18 ClientInterface interface. **/ 
+    /** @testdox Implements Guzzle's PSR-18 ClientInterface interface. **/
     public function testImplementsGuzzlesClientInterface()
     {
         self::assertInstanceOf(\GuzzleHttp\ClientInterface::class, $this->http);
     }
+
+    public function testSupportsLoggingAllRequestsWithCuzzle()
+    {
+        // This actually tests whether RESTSpeaker works without the cuzzle package...
+
+        $expectedBody = '<html lang="us">Hi</html>';
+        $expected = new Response(200, ['Content-Type' => 'text/html'], $expectedBody);
+        $this->guzzleHandler->append(
+            $expected
+        );
+
+        // Disable cuzzle logging:
+        $this->http->enableCuzzle = false;
+        $actual = $this->http->get('https://somewhere.com/');
+        self::assertEquals($expected, $actual);
+        self::assertEquals($expectedBody, $actual->getBody());    }
 }

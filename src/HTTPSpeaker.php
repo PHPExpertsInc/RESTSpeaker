@@ -22,6 +22,7 @@ use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
 use Monolog\Handler\TestHandler;
 use Monolog\Logger;
+//use Namshi\Cuzzle\Middleware\CurlFormatterMiddleware;
 use Namshi\Cuzzle\Middleware\CurlFormatterMiddleware;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -43,9 +44,12 @@ class HTTPSpeaker implements ClientInterface
     /** @var TestHandler */
     public $testHandler;
 
+    public $enableCuzzle = true;
+
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
-        if (class_exists(CurlFormatterMiddleware::class)) {
+        $handler = null;
+        if ($this->enableCuzzle && class_exists(CurlFormatterMiddleware::class)) {
             $testHandler = new TestHandler();
 
             $logger = new Logger('guzzle.to.curl');
@@ -75,7 +79,7 @@ class HTTPSpeaker implements ClientInterface
         }
 
         // @todo: Figure out how to include a real version number.
-        $userOptions['headers']['User-Agent'] = $methodArgs[1]['headers']['User-Agent'] ?? "PHPExperts/RESTSpeaker-1.0 (PHP {$phpV})";
+        $userOptions['headers']['User-Agent'] = $methodArgs[1]['headers']['User-Agent'] ?? "PHPExperts/RESTSpeaker-2.4 (PHP {$phpV})";
         $userOptions['headers']['Content-Type'] = $methodArgs[1]['headers']['Content-Type'] ?? $this->mimeType;
 
         $options = array_merge_recursive(
