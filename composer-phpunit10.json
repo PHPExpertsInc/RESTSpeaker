@@ -1,0 +1,54 @@
+{
+    "name": "phpexperts/rest-speaker",
+    "description": "A quick and easy GuzzleHTTP extension for effortlessly handling RESTful APIs.",
+    "keywords": [
+        "rest",
+        "restful",
+        "php",
+        "api"
+    ],
+    "homepage": "https://www.phpexperts.pro/",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "PHP Experts, Inc.",
+            "homepage": "https://www.phpexperts.pro/"
+        },
+        {
+            "name": "Theodore R. Smith",
+            "homepage": "https://www.linkedin.com/in/hopeseekr"
+        }
+    ],
+    "require": {
+        "php": ">=7.2",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "guzzlehttp/guzzle": "6.*|7.*"
+    },
+    "suggest": {
+        "phpexperts/laravel-env-polyfill": "1.*",
+        "octoper/cuzzle": "3.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "dev-main",
+        "phpstan/phpstan": "*",
+        "symfony/var-dumper": "*",
+        "phpexperts/laravel-env-polyfill": "*",
+        "phpexperts/dockerize": "*",
+        "vlucas/phpdotenv": "^5.4",
+        "monolog/monolog": "^2.8"
+    },
+    "autoload": {
+        "psr-4": { "PHPExperts\\RESTSpeaker\\" : "src/" }
+    },
+    "autoload-dev": {
+        "psr-4": { "PHPExperts\\RESTSpeaker\\Tests\\" : "tests/" }
+    },
+    "config": {
+        "allow-plugins": {
+            "0.0.0/composer-include-files": true
+        }
+    },
+    "minimum-stability" : "dev",
+    "prefer-stable" : true
+}
