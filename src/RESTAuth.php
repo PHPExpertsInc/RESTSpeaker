@@ -71,12 +71,18 @@ abstract class RESTAuth implements RESTAuthDriver
      * @throws RuntimeException if an OAuth2 Token could not be successfully generated.
      * @return array The appropriate headers for OAuth2 Tokens.
      */
-    abstract protected function generateOAuth2TokenOptions(): array;
+    protected function generateOAuth2TokenOptions(): array
+    {
+        throw new LogicException('The base RestAuth should not be called.');
+    }
 
     /**
      * @return array The appropriate headers for passkey authorization.
      */
-    abstract protected function generatePasskeyOptions(): array;
+    protected function generatePasskeyOptions(): array
+    {
+        throw new LogicException('The base RestAuth should not be called.');
+    }
 
     protected function generateXAPITokenOptions(): array
     {
