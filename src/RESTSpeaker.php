@@ -3,7 +3,7 @@
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
  *
- * Copyright © 2019-2020 PHP Experts, Inc.
+ * Copyright © 2019-2024 PHP Experts, Inc.
  * Author: Theodore R. Smith <theodore@phpexperts.pro>
  *  GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
  *  https://www.phpexperts.pro/
@@ -16,7 +16,6 @@ namespace PHPExperts\RESTSpeaker;
 
 use GuzzleHttp\Client as GuzzleClient;
 use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Promise\PromiseInterface;
 use GuzzleHttp\Psr7\Response;
 use Psr\Http\Message\RequestInterface;
@@ -87,8 +86,8 @@ class RESTSpeaker implements ClientInterface
             }
         }
 
-        // Nothing worked out, so let's return what we got.
-        return $response;
+        // Nothing worked out, so let's return the raw string.
+        return $responseData;
     }
 
     /**
