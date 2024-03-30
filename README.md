@@ -22,6 +22,18 @@ composer require phpexperts/rest-speaker
 
 ## Change log
 
+**Version 2.6.0**
+
+* **[2024-03-29 20:03:40 CDT]** Return the raw data if it is not JSON.
+* **[2024-03-29 20:05:27 CDT]** Added PHP 8.3 support.
+
+**Version 2.5.0**
+
+* **[2023-01-30 10:22:26 CDT]** Removed the need to override the RESTAuth methods.
+* **[2023-01-30 10:21:58 CDT]** [m] Upgraded to phpunit v9.5.
+* **[2023-01-30 09:57:09 CDT]** Added a NoAuth class.
+
+
 Please see the [changelog](CHANGELOG.md) for more information on what has changed recently.
 
 ## Usage
@@ -128,11 +140,11 @@ PHPExperts\RESTSpeaker\Tests\RESTAuth
 PHPExperts\RESTSpeaker\Tests\RESTSpeaker  
  ✔ Can build itself  
  ✔ Returns null when no content  
- ✔ Works as a Guzzle proxy when not JSON  
+ ✔ Returns exact unmodified data when not JSON 
  ✔ JSON URLs return plain PHP arrays  
  ✔ Can fall down to HTTPSpeaker  
  ✔ Requests the application/json Content-Type  
- ✔ Can get the last raw response  
+ ✔ Can get the last raw Guzzle response  
  ✔ Can get the last status code  
  ✔ Will automagically pass arrays as JSON via POST, PATCH and PUT.  
  ✔ Will automagically pass objects as JSON via POST, PATCH and PUT.  

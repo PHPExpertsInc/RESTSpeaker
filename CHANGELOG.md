@@ -2,6 +2,11 @@
 
 All notable changes to the project will be documented in this file.
 
+## Version 2.6.0
+
+* **[2024-03-29 20:03:40 CDT]** Return the raw data if it is not JSON.
+* **[2024-03-29 20:05:27 CDT]** Added PHP 8.3 support.
+
 ## Version 2.5.0
 
 * **[2023-01-30 10:22:26 CDT]** Removed the need to override the RESTAuth methods.

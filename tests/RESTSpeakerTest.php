@@ -3,7 +3,7 @@
 /**
  * This file is part of RESTSpeaker, a PHP Experts, Inc., Project.
  *
- * Copyright © 2019-2020 PHP Experts, Inc.
+ * Copyright © 2019-2024 PHP Experts, Inc.
  * Author: Theodore R. Smith <theodore@phpexperts.pro>
  *  GPG Fingerprint: 4BF8 2613 1C34 87AC D28F  2AD8 EB24 A91D D612 5690
  *  https://www.phpexperts.pro/
@@ -63,7 +63,7 @@ class RESTSpeakerTest extends TestCase
         self::assertNull($actual);
     }
 
-    public function testWorks_as_a_Guzzle_proxy_when_not_JSON()
+    public function testReturns_exact_unmodified_data_when_not_JSON()
     {
         $expectedBody = '<html lang="us">Hi</html>';
         $expected = new Response(200, ['Content-Type' => 'text/html'], $expectedBody);
@@ -72,8 +72,7 @@ class RESTSpeakerTest extends TestCase
         );
 
         $actual = $this->api->get('https://somewhere.com/');
-        self::assertEquals($expected, $actual);
-        self::assertEquals($expectedBody, $actual->getBody());
+        self::assertEquals($expectedBody, $actual);
     }
 
     public function testJSON_URLs_return_plain_PHP_arrays()
