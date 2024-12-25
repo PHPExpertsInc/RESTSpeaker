@@ -1,6 +1,11 @@
 # Changelog
 
-All notable changes to the project will be documented in this file.
+All notable changes to the project are documented in this file.
+
+## Version 2.7.0
+
+* **[2024-12-25 05:49:23 CST]** Expose the Guzzle HTTP Middleware stack to thirdparty developers.
+* **[2024-12-25 05:48:48 CST]** Upgraded to phpexperts/dockerize v12.
 
 ## Version 2.6.0
 
@@ -9,14 +14,14 @@ All notable changes to the project will be documented in this file.
 
 ## Version 2.5.0
 
-* **[2023-01-30 10:22:26 CDT]** Removed the need to override the RESTAuth methods.
-* **[2023-01-30 10:21:58 CDT]** [m] Upgraded to phpunit v9.5.
-* **[2023-01-30 09:57:09 CDT]** Added a NoAuth class.
+* **[2023-01-30 10:22:26 CST]** Removed the need to override the RESTAuth methods.
+* **[2023-01-30 10:21:58 CST]** [m] Upgraded to phpunit v9.5.
+* **[2023-01-30 09:57:09 CST]** Added a NoAuth class.
 
 ## Version 2.4.2
 
-* **[2023-01-21 12:22:01 CDT]** [m] Added a composer file for the upcoming PHPUnit v10.
-* **[2023-01-21 11:57:15 CDT]** [m] Migrated the phpunit.xml for PHPUnit 9.3.
+* **[2023-01-21 12:22:01 CST]** [m] Added a composer file for the upcoming PHPUnit v10.
+* **[2023-01-21 11:57:15 CST]** [m] Migrated the phpunit.xml for PHPUnit 9.3.
 * **[2022-10-29 21:12:00 CDT]** Added a Google ReCAPTCHA v3 example.
 
 ## Version 2.4.1
