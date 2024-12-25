@@ -22,6 +22,12 @@ composer require phpexperts/rest-speaker
 
 ## Change log
 
+**Version 2.7.0**
+
+* **[2024-12-25 05:49:23 CST]** Expose the Guzzle HTTP Middleware stack to thirdparty developers.
+* **[2024-12-25 05:48:48 CST]** Upgraded to phpexperts/dockerize v12.
+
+
 **Version 2.6.0**
 
 * **[2024-03-29 20:03:40 CDT]** Return the raw data if it is not JSON.

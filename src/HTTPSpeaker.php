@@ -41,6 +41,9 @@ class HTTPSpeaker implements ClientInterface
     /** @var Response|null */
     protected $lastResponse;
 
+    /** @var HandlerStack */
+    public $guzzleMiddlewareStack;
+
     /** @var TestHandler */
     public $testHandler;
 
@@ -48,21 +51,21 @@ class HTTPSpeaker implements ClientInterface
 
     public function __construct(string $baseURI = '', iGuzzleClient $guzzle = null)
     {
-        $handler = null;
+        $this->guzzleMiddlewareStack = HandlerStack::create();;
         if ($this->enableCuzzle && class_exists(CurlFormatterMiddleware::class)) {
             $testHandler = new TestHandler();
 
             $logger = new Logger('guzzle.to.curl');
             $logger->pushHandler($testHandler);
-            $handler = HandlerStack::create();
-            $handler->after('cookies', new CurlFormatterMiddleware($logger)); //add the cURL formatter middleware
+
+            $this->guzzleMiddlewareStack->after('cookies', new CurlFormatterMiddleware($logger)); //add the cURL formatter middleware
             $this->testHandler = $testHandler;
         }
 
         if (!$guzzle) {
             $guzzle = new GuzzleClient([
                 'base_uri' => $baseURI,
-                'handler' => $handler,
+                'handler' => $this->guzzleMiddlewareStack,
                 'version' => '2.0',
             ]);
         }
