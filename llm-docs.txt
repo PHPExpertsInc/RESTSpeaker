@@ -13,6 +13,108 @@ library design patterns with strict typing.
 - **Guzzle foundation**: Uses Guzzle ClientInterface, allowing middleware and advanced features
 - **Type safety**: PHP 7.4+ typed properties throughout
 
+
+PHPUnit 11.5.42 by Sebastian Bergmann and contributors.
+
+Runtime:       PHP 8.5.3
+Configuration: /code/RESTSpeaker/phpunit.xml
+
+................................................................. 65 / 75 ( 86%)
+..........                                                        75 / 75 (100%)
+
+Time: 00:00.116, Memory: 8.00 MB
+
+Basic Auth (PHPExperts\RESTSpeaker\Tests\BasicAuth)
+ ✔ Can be instantiated
+ ✔ Returns basic auth options
+ ✔ Can be instantiated with a RESTSpeaker client
+ ✔ Can be instantiated without a RESTSpeaker client
+ ✔ setCredentials() sets the username and password
+ ✔ setApiClient() sets the API client
+ ✔ BasicAuth implements RESTAuthDriver interface
+
+HTTPSpeaker (PHPExperts\RESTSpeaker\Tests\HTTPSpeaker)
+ ✔ Works as a Guzzle proxy
+ ✔ Identifies as its own user agent
+ ✔ Requests text html content type
+ ✔ Can get the last raw response
+ ✔ Can get the last status code
+ ✔ Implements Guzzle's PSR-18 ClientInterface interface. *
+ ✔ Supports logging all requests with cuzzle
+ ✔ Can get the full guzzle config
+ ✔ Can get specific guzzle config option
+
+No Auth (PHPExperts\RESTSpeaker\Tests\NoAuth)
+ ✔ Can be instantiated
+ ✔ Returns no auth options
+ ✔ Can be instantiated with a RESTSpeaker client
+ ✔ Can be instantiated without a RESTSpeaker client
+ ✔ setApiClient() sets the API client
+ ✔ setApiClient() can replace existing client
+ ✔ AUTH_NONE constant is defined
+ ✔ generateGuzzleAuthOptions always returns empty array
+ ✔ generateGuzzleAuthOptions returns empty array even with API client set
+ ✔ Can be used with RESTSpeaker without authentication
+ ✔ Protected generateOAuth2TokenOptions returns empty array
+ ✔ Protected generatePasskeyOptions returns empty array
+ ✔ NoAuth implements RESTAuthDriver interface
+ ✔ NoAuth can be constructed and used in a fluent chain
+
+RESTAuth (PHPExperts\RESTSpeaker\Tests\RESTAuth)
+ ✔ Cannot build itself
+ ✔ Children can build themselves
+ ✔ Will not allow invalid auth modes
+ ✔ Can set a custom api client
+ ✔ Wont call a nonexisting auth strat
+ ✔ Supports no auth
+ ✔ Supports XAPI Token auth
+ ✔ Supports custom auth strategies
+ ✔ Uses the laravel env polyfill
+ ✔ Generate o auth 2 token options throws logic exception
+ ✔ Generate passkey options throws logic exception
+
+RESTSpeaker (PHPExperts\RESTSpeaker\Tests\RESTSpeaker)
+ ✔ Can build itself
+ ✔ Returns null when no content
+ ✔ Returns exact unmodified data when not JSON
+ ✔ JSON URLs return plain PHP arrays
+ ✔ Can fall down to HTTPSpeaker
+ ✔ Requests application json content type
+ ✔ Can get the last raw response
+ ✔ Can get the last status code
+ ✔ Will automagically pass arrays as JSON via POST, PATCH and PUT.
+ ✔ Will automagically pass objects as JSON via POST, PATCH and PUT.
+ ✔ Implements Guzzle's PSR-18 ClientInterface interface. *
+ ✔ Can set and use custom Content-Type headers
+ ✔ Content-Type setting is sticky across multiple requests
+ ✔ Does not decode JSON when content type is not JSON
+ ✔ Returns raw binary data for non-JSON content types
+ ✔ Can change content type back to JSON and resume decoding
+ ✔ Supports method chaining with setContentType
+ ✔ Sets Content-Type on POST, PUT, and PATCH requests
+ ✔ Default content type is application/json
+ ✔ Can retrieve the authentication strategy
+ ✔ getAuthStrat returns the same instance passed to constructor
+ ✔ Can get the full guzzle config
+
+Tests for Guzzle ClientInterface methods
+ ✔ send() delegates to HTTPSpeaker and returns ResponseInterface
+ ✔ send() passes options through correctly
+ ✔ sendAsync() returns a PromiseInterface
+ ✔ sendAsync() passes options through correctly
+ ✔ request() delegates to HTTPSpeaker and returns ResponseInterface
+ ✔ request() works with all HTTP methods
+ ✔ request() passes options through correctly
+ ✔ requestAsync() returns a PromiseInterface
+ ✔ requestAsync() works with all HTTP methods
+ ✔ requestAsync() passes options through correctly
+ ✔ Low-level methods work with full URIs
+ ✔ send() handles PSR-7 Request objects correctly
+
+OK, but there were issues!
+Tests: 75, Assertions: 191, PHPUnit Deprecations: 45.
+
+
 **Classes:**
 
 **RESTSpeaker** (Main API Client):
@@ -101,3 +203,4 @@ $api = new RESTSpeaker(new BearerAuth('my-token'), 'https://api.example.com');
 - Custom Guzzle instance: Pass to HTTPSpeaker constructor
 - PSR-7 compatibility: Implements ClientInterface, works with PSR-7 Request/Response
 ```
+
